@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>スタディクエスト365</title>
+<meta name="description" content="毎日の学習RPG。卵をかえしてキャラをあつめよう！">
+<meta name="theme-color" content="#1B1F3B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="スタクエ365">
+<!-- OGP -->
+<meta property="og:title" content="スタディクエスト365">
+<meta property="og:description" content="毎日の学習RPG。卵をかえしてキャラをあつめよう！">
+<meta property="og:type" content="website">
+<!-- PWA manifest -->
+<link rel="manifest" href="manifest.json">
+<!-- アイコン（emoji fallback） -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦊</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231B1F3B' rx='20'/><text y='.9em' font-size='80' x='10'>🦊</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<style>
+:root{
+  --night:#1B1F3B; --night2:#2A2C57;
+  --parch:#FFF7E6; --parch2:#FFEFCE;
+  --ember:#FF7A3D; --ember-deep:#E85D2A;
+  --sky:#43B0F1; --gold:#FFC53D;
+  --leaf:#43C46B; --leaf-d:#2EA354;
+  --berry:#FF5D73; --berry-d:#E83A53;
+  --ink:#3A2E1F; --muted:#9A8B73; --line:#E7D6B0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"M PLUS Rounded 1c",system-ui,sans-serif;
+  color:#fff;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #34376e 0%, transparent 60%),
+    radial-gradient(800px 500px at 100% 100%, #3a2150 0%, transparent 55%),
+    linear-gradient(160deg,#1B1F3B 0%, #241f44 55%, #1a1733 100%);
+  background-attachment:fixed;
+  min-height:100vh;
+  -webkit-tap-highlight-color:transparent;
+}
+.wrap{max-width:520px;margin:0 auto;padding:14px 14px 96px}
+h1,h2,h3{font-family:"Mochiy Pop One",sans-serif;font-weight:400;margin:0;letter-spacing:.5px}
+button{font-family:inherit;cursor:pointer;border:none}
+button:focus-visible,input:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+
+/* ===== ヘッダー ===== */
+.top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.crest{font-size:30px;filter:drop-shadow(0 3px 0 rgba(0,0,0,.25))}
+.title{font-size:19px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.3)}
+.title small{display:block;font-family:"M PLUS Rounded 1c";font-size:11px;color:var(--gold);font-weight:700;letter-spacing:2px}
+.coins{margin-left:auto;background:rgba(0,0,0,.28);border:2px solid rgba(255,197,61,.5);
+  border-radius:999px;padding:6px 12px;font-weight:800;color:var(--gold);display:flex;gap:6px;align-items:center;font-size:14px}
+
+/* ===== ステータスバー ===== */
+.statusbar{display:flex;gap:8px;margin-bottom:12px}
+.pill{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;
+  padding:8px 10px;text-align:center}
+.pill .k{font-size:10px;color:#c7c9e6;font-weight:700}
+.pill .v{font-size:18px;font-weight:800;font-family:"Mochiy Pop One"}
+.pill .v.sky{color:var(--sky)} .pill .v.gold{color:var(--gold)} .pill .v.ember{color:var(--ember)}
+
+/* ===== カード共通（パーチメント） ===== */
+.card{background:linear-gradient(180deg,var(--parch) 0%, var(--parch2) 100%);
+  color:var(--ink);border-radius:22px;padding:16px;margin-bottom:14px;
+  border:2px solid #fff;box-shadow:0 10px 0 rgba(0,0,0,.18), 0 14px 30px rgba(0,0,0,.35);position:relative;overflow:hidden}
+.card .eyebrow{font-size:11px;font-weight:800;color:var(--ember-deep);letter-spacing:1.5px;text-transform:uppercase}
+.card h2{font-size:17px;color:var(--ink);margin:2px 0 10px}
+
+/* ===== 相棒 ===== */
+.buddy{display:flex;gap:14px;align-items:center}
+.buddy-egg{width:108px;height:108px;flex:0 0 108px;border-radius:24px;
+  background:radial-gradient(circle at 50% 35%, #fff 0%, var(--parch2) 70%);
+  border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;
+  font-size:62px;box-shadow:inset 0 -8px 14px rgba(232,93,42,.12);position:relative}
+.buddy-egg.bounce{animation:bounce .6s ease}
+@keyframes bounce{0%{transform:scale(1)}30%{transform:scale(1.18) rotate(-6deg)}60%{transform:scale(.94)}100%{transform:scale(1)}}
+.buddy-info{flex:1;min-width:0}
+.buddy-name{font-family:"Mochiy Pop One";font-size:20px;color:var(--ink)}
+.buddy-stage{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:8px}
+.bar{height:16px;background:#efe2c4;border-radius:999px;overflow:hidden;border:1px solid #e0cfa6}
+.bar > i{display:block;height:100%;border-radius:999px;transition:width .7s cubic-bezier(.2,.9,.3,1)}
+.bar.exp > i{background:linear-gradient(90deg,var(--sky),#7fd0ff)}
+.bar.love > i{background:linear-gradient(90deg,var(--ember),var(--gold))}
+.barlabel{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--muted);margin:8px 0 3px}
+
+/* ===== 宝箱 ===== */
+.chest-row{display:flex;align-items:center;gap:14px}
+.chest{font-size:54px;cursor:pointer;user-select:none;transition:transform .15s}
+.chest.shake{animation:shake .5s}
+.chest:active{transform:scale(.9)}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-10deg) scale(1.05)}40%{transform:rotate(9deg)}60%{transform:rotate(-7deg)}80%{transform:rotate(5deg)}}
+.chest.opened{filter:grayscale(.4) opacity(.6);cursor:default}
+.btn{display:inline-block;background:linear-gradient(180deg,var(--ember),var(--ember-deep));color:#fff;
+  font-weight:800;font-size:16px;padding:14px 18px;border-radius:16px;box-shadow:0 5px 0 #b4471d;transition:transform .08s,box-shadow .08s;width:100%}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #b4471d}
+.btn.sky{background:linear-gradient(180deg,var(--sky),#1f8fd6);box-shadow:0 5px 0 #15689c}
+.btn.sky:active{box-shadow:0 2px 0 #15689c}
+.btn.leaf{background:linear-gradient(180deg,var(--leaf),var(--leaf-d));box-shadow:0 5px 0 #1f7d40}
+.btn.leaf:active{box-shadow:0 2px 0 #1f7d40}
+.btn.ghost{background:#fff;color:var(--ember-deep);border:2px solid var(--ember);box-shadow:0 5px 0 #f0d3b0}
+.btn.ghost:active{box-shadow:0 2px 0 #f0d3b0}
+.btn:disabled{filter:grayscale(.6) opacity(.55);box-shadow:none;transform:none;cursor:default}
+
+/* ===== 問題 ===== */
+.qtag{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px;color:#fff;margin-bottom:8px}
+.qtag.calc{background:var(--sky)} .qtag.kanji{background:#b06bd1}
+.qtag.kokugo{background:#b06bd1} .qtag.rika{background:var(--leaf-d)}
+.qtag.shakai{background:#d98a2b} .qtag.cross{background:linear-gradient(90deg,var(--ember),#b06bd1)}
+.qtag.shun{background:linear-gradient(90deg,#43C46B,#43B0F1)} .qtag.saki{background:var(--ember-deep)}
+.qtag.eigo{background:linear-gradient(90deg,#f59e0b,#ef4444)}
+.choices{display:flex;flex-direction:column;gap:9px;margin:6px 0 4px}
+.choice{background:#fff;border:2px solid var(--line);border-radius:14px;padding:13px 14px;text-align:left;
+  font-family:"M PLUS Rounded 1c";font-weight:700;font-size:15px;color:var(--ink);display:flex;gap:10px;align-items:center;width:100%}
+.choice:active{transform:translateY(1px)}
+.choice .mk{flex:0 0 26px;height:26px;border-radius:50%;background:var(--parch2);color:var(--ember-deep);
+  font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.choice.pick-ok{border-color:var(--leaf);background:#e4f8ea}
+.choice.pick-ng{border-color:var(--berry);background:#ffe7eb}
+.choice.reveal{border-color:var(--leaf);background:#eafaef}
+.choice:disabled{cursor:default}
+.qbody.read{font-family:"M PLUS Rounded 1c";font-size:16px;font-weight:700;line-height:1.8;text-align:left;background:#fffdf5;border:2px solid var(--line);border-radius:14px;padding:12px}
+.qprog{font-size:12px;color:var(--muted);font-weight:700;float:right}
+.qbody{font-family:"Mochiy Pop One";font-size:34px;color:var(--ink);text-align:center;margin:14px 0 6px;line-height:1.3}
+.qsub{text-align:center;font-size:12px;color:var(--muted);margin-bottom:12px;font-weight:700}
+.ans{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+.ans input{font-family:"Mochiy Pop One";font-size:26px;text-align:center;width:100%;max-width:240px;
+  padding:10px;border-radius:14px;border:2px solid var(--line);background:#fff;color:var(--ink)}
+.ans input.k2{max-width:120px}
+.result{border-radius:16px;padding:12px;margin-top:4px;font-weight:800;text-align:center}
+.result.ok{background:#e4f8ea;color:var(--leaf-d);border:2px solid #b9ebc8}
+.result.ng{background:#ffe7eb;color:var(--berry-d);border:2px solid #ffc6d0}
+.result .big{font-family:"Mochiy Pop One";font-size:18px;display:block;margin-bottom:2px}
+
+/* AI解説 */
+.ai{margin-top:10px;background:#fffdf5;border:2px dashed var(--gold);border-radius:16px;padding:12px;color:var(--ink)}
+.ai .who{font-weight:800;color:var(--ember-deep);font-size:13px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.ai .body{font-size:14px;line-height:1.7;white-space:pre-wrap}
+.dots{display:inline-block}
+.dots:after{content:"";animation:dots 1.2s steps(4,end) infinite}
+@keyframes dots{0%{content:""}25%{content:"・"}50%{content:"・・"}75%{content:"・・・"}}
+
+/* ===== ずかん ===== */
+.dex{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.slot{aspect-ratio:1;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:#efe2c4;border:2px solid #e0cfa6;color:var(--muted);font-size:11px;font-weight:800}
+.slot .face{font-size:30px;line-height:1}
+.slot.got{background:#fff;border-color:var(--gold);color:var(--ink);box-shadow:0 4px 0 #f0d3b0}
+.slot.got .face{filter:drop-shadow(0 2px 1px rgba(0,0,0,.15))}
+
+/* ===== 苦手マップ ===== */
+.skill{margin-bottom:10px}
+.skill .row{display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.skill .row .pct{color:var(--muted)}
+.mini{height:12px;background:#efe2c4;border-radius:999px;overflow:hidden;border:1px solid #e0cfa6}
+.mini > i{display:block;height:100%;border-radius:999px;transition:width .6s}
+
+.hatchpop{animation:hatch .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes hatch{0%{transform:scale(0) rotate(-20deg);opacity:0}55%{transform:scale(1.25) rotate(8deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+.egg{font-size:54px;cursor:pointer;user-select:none}
+.egg:active{transform:scale(.9)}
+.egg.wiggle{animation:shake .5s}
+
+/* ===== 保護者 ===== */
+.pstat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pstat > div{background:#eef0ff;border:1px solid #dfe2ff;border-radius:14px;padding:8px 4px;text-align:center}
+.pstat .k{font-size:10px;font-weight:800;color:#6a6fb0}
+.pstat .v{font-family:"Mochiy Pop One";font-size:17px;color:#2b2e63}
+.setrow{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.setlab{font-size:13px;font-weight:800;color:var(--ink);flex:0 0 100%}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{background:#fff;border:2px solid var(--line);color:var(--muted);font-weight:800;font-size:13px;padding:8px 12px;border-radius:999px}
+.seg button.on{background:var(--ember);border-color:var(--ember);color:#fff}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.dot{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;background:#eef0ff;color:#9aa0d0}
+.dot.on{background:var(--leaf);color:#fff;font-size:15px}
+
+/* ===== タブ ===== */
+.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(20,22,46,.92);backdrop-filter:blur(8px);
+  border-top:1px solid rgba(255,255,255,.1);display:flex;max-width:520px;margin:0 auto;z-index:30}
+.tabs button{flex:1;background:none;color:#aeb0d4;padding:9px 0 12px;font-size:11px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:3px}
+.tabs button .ic{font-size:21px}
+.tabs button.active{color:var(--gold)}
+.hidden{display:none!important}
+
+/* レベルアップ演出 */
+.flash{position:fixed;inset:0;background:rgba(10,8,30,.78);display:flex;align-items:center;justify-content:center;z-index:50;animation:fade .3s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.flash .box{text-align:center;color:#fff;animation:pop .5s cubic-bezier(.2,1.3,.4,1)}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.flash .lvl{font-family:"Mochiy Pop One";font-size:46px;color:var(--gold);text-shadow:0 0 24px rgba(255,197,61,.7)}
+.flash .star{font-size:30px;letter-spacing:6px}
+.toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#fff;color:var(--ink);
+  font-weight:800;padding:12px 18px;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:60;animation:up .3s}
+@keyframes up{from{transform:translate(-50%,16px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+
+.note{font-size:11px;color:#b9bbdd;text-align:center;margin-top:6px;line-height:1.6}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div class="crest">🦊</div>
+    <div class="title">スタディクエスト365<small>CLOUD STUDY QUEST</small></div>
+    <div class="coins">🪙 <span id="coins">0</span></div>
+  </div>
+
+  <div class="statusbar">
+    <div class="pill"><div class="k">レベル</div><div class="v sky" id="lvl">1</div></div>
+    <div class="pill"><div class="k">れんぞく</div><div class="v ember" id="streak">0</div></div>
+    <div class="pill"><div class="k">ずかん</div><div class="v gold" id="dexn">0/12</div></div>
+  </div>
+
+  <!-- ============ ホーム ============ -->
+  <section id="tab-home">
+    <p id="greet" style="text-align:center;font-weight:800;color:#dfe1ff;font-size:13px;margin:0 0 10px">こんにちは！ きょうも ぼうけんしよう。</p>
+    <div class="card">
+      <div class="eyebrow">あいぼう</div>
+      <div class="buddy">
+        <div class="buddy-egg" id="buddyEgg">🥚</div>
+        <div class="buddy-info">
+          <div class="buddy-name" id="buddyName">ナゾのタマゴ</div>
+          <div class="buddy-stage" id="buddyStage">Lv1 ・ なにがうまれるかな？</div>
+          <div class="barlabel"><span>つぎのレベルまで</span><span id="expTxt">0/100</span></div>
+          <div class="bar exp"><i id="expBar" style="width:0%"></i></div>
+          <div class="barlabel"><span>なかよし度</span><span id="loveTxt">0%</span></div>
+          <div class="bar love"><i id="loveBar" style="width:0%"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">たまご・くじ ／ おこづかい</div>
+      <h2>たまごを かえそう！</h2>
+      <div class="chest-row">
+        <div class="egg" id="egg" role="button" tabindex="0" aria-label="たまごをかえす">🥚</div>
+        <div style="flex:1">
+          <div id="eggMsg" style="font-weight:800;color:var(--ink);font-size:14px;margin-bottom:8px">もっているたまご：<b id="eggN">0</b>こ</div>
+          <button class="btn" id="hatchBtn">かえす（くじ）</button>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <div class="barlabel"><span>💰 今月のおこづかい</span><span id="opPt">0pt</span></div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="font-family:'Mochiy Pop One';font-size:28px;color:var(--leaf-d)" id="opYen">¥0</div>
+          <div style="flex:1">
+            <div class="bar love"><i id="opBar" style="width:0%"></i></div>
+            <div id="opTxt" style="font-size:11px;font-weight:800;color:var(--muted);margin-top:3px">あと ¥1000 でMAX</div>
+          </div>
+        </div>
+      </div>
+      <p class="note">たまごを かえすと キャラが でて、レアだと おこづかいポイントが たくさん！🌟</p>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">まいにち1かい</div>
+      <h2>たからばこ</h2>
+      <div class="chest-row">
+        <div class="chest" id="chest" role="button" tabindex="0" aria-label="たからばこを ひらく">🎁</div>
+        <div style="flex:1">
+          <div id="chestMsg" style="font-weight:800;color:var(--ink);font-size:14px;margin-bottom:8px">きょうの たからばこを ひらこう！</div>
+          <button class="btn" id="chestBtn">ひらく</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">きょうのミッション</div>
+      <h2>算数・国語・理科・社会・英語の 5きょうか</h2>
+      <p style="font-size:13px;color:var(--muted);font-weight:700;margin:0 0 12px">
+        ステージ1きほん → ステージ2おうよう（理社多め）→ ステージ3英語・旬・先どり。クリアごとに🥚GET！まちがえたら🦉AI先生が解説✨</p>
+      <button class="btn sky" id="startBtn">▶ ミッションをはじめる</button>
+      <p class="note">問題量は「おうち」タブで調整できます（しっかり＝約30分）。</p>
+    </div>
+  </section>
+
+  <!-- ============ 学習 ============ -->
+  <section id="tab-study" class="hidden">
+    <div class="card" id="quizCard">
+      <div id="quizArea"></div>
+    </div>
+  </section>
+
+  <!-- ============ ずかん ============ -->
+  <section id="tab-dex" class="hidden">
+    <div class="card">
+      <div class="eyebrow">あつめた なかま</div>
+      <h2>モンスターずかん</h2>
+      <div class="dex" id="dexGrid"></div>
+      <p class="note">EXPをためたり、たからばこを ひらくと なかまが ふえるよ。</p>
+    </div>
+  </section>
+
+  <!-- ============ きろく ============ -->
+  <section id="tab-rec" class="hidden">
+    <div class="card">
+      <div class="eyebrow">にがて・とくい マップ</div>
+      <h2>じぶんの ちから</h2>
+      <div id="skills"></div>
+      <p class="note">正答率が ひくい分野を、つぎの日に 多めに出すよ（自動）。</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow">めざせ</div>
+      <h2>半田高校附属中（適性検査）</h2>
+      <p style="font-size:13px;color:var(--ink);font-weight:700;line-height:1.7;margin:0">
+        本番は「長い文章＋グラフを読んで、教科をまたいで考える」テスト。
+        いまは <b>計算・漢字・読書</b> で土台づくり中。小5から適性検査の問題にちょうせんしていこう！</p>
+    </div>
+  </section>
+
+  <!-- ============ おうちの人 ============ -->
+  <section id="tab-parent" class="hidden">
+    <div class="card" style="background:linear-gradient(180deg,#fff,#f3f5ff)">
+      <div class="eyebrow" style="color:#5a5fb0">ほごしゃ ダッシュボード</div>
+      <h2 id="pTitle" style="color:#2b2e63">きょうのようす</h2>
+      <div id="pSummary"></div>
+    </div>
+    <div class="card" style="background:linear-gradient(180deg,#fff,#f3f5ff)">
+      <div class="eyebrow" style="color:#5a5fb0">教科べつ・苦手マップ</div>
+      <h2 style="color:#2b2e63">どこが のびて、どこが 苦手か</h2>
+      <div id="pSkills"></div>
+      <div id="pAnalysis" style="margin-top:10px;font-size:13px;font-weight:700;color:#2b2e63;line-height:1.7"></div>
+    </div>
+    <div class="card" style="background:linear-gradient(180deg,#fff,#f3f5ff)">
+      <div class="eyebrow" style="color:#5a5fb0">この2しゅうかんの 学習</div>
+      <h2 style="color:#2b2e63">つづいているかな</h2>
+      <div id="pCal"></div>
+    </div>
+    <div class="card" style="background:linear-gradient(180deg,#fff,#fff7ef)">
+      <div class="eyebrow">せってい（おうちの人）</div>
+      <h2 style="color:var(--ink)">問題の重さを 調整</h2>
+      <div id="pSettings"></div>
+      <p class="note" style="color:var(--muted);text-align:left;margin-top:10px">※ 変えると つぎのミッションから 反映されます。半田附属中は適性検査型なので、慣れてきたら横断問題と読解を増やすのがおすすめ。</p>
+    </div>
+  </section>
+</div>
+
+<!-- タブバー -->
+<nav class="tabs">
+  <button data-tab="home" class="active"><span class="ic">🏠</span>ホーム</button>
+  <button data-tab="study"><span class="ic">✏️</span>がくしゅう</button>
+  <button data-tab="dex"><span class="ic">📖</span>ずかん</button>
+  <button data-tab="rec"><span class="ic">📊</span>きろく</button>
+  <button data-tab="parent"><span class="ic">👨‍👩‍👧</span>おうち</button>
+</nav>
+
+<script>
+/* ===================== データ ===================== */
+// r=1ノーマル r=2レア r=3スーパーレア r=4ウルトラレア
+// g=グループ  limited=月限定(1〜12)
+const MONS = [
+  // ── ゆるかわ系 どうぶつ（r1） ──
+  {f:"🐻",n:"くまっこ",r:1,g:"どうぶつ"},{f:"🐼",n:"パンちゃん",r:1,g:"どうぶつ"},{f:"🐨",n:"コアらん",r:1,g:"どうぶつ"},
+  {f:"🐸",n:"ケロりん",r:1,g:"どうぶつ"},{f:"🐹",n:"ハムぽん",r:1,g:"どうぶつ"},{f:"🐭",n:"ねずみっち",r:1,g:"どうぶつ"},
+  {f:"🐧",n:"ぺんぺん",r:1,g:"どうぶつ"},{f:"🦆",n:"がーこ",r:1,g:"どうぶつ"},{f:"🐝",n:"みつばち丸",r:1,g:"どうぶつ"},
+  {f:"🐢",n:"カメじい",r:1,g:"どうぶつ"},{f:"🐰",n:"うさぴょん",r:1,g:"どうぶつ"},{f:"🐱",n:"にゃんこ",r:1,g:"どうぶつ"},
+  {f:"🐶",n:"わんこ",r:1,g:"どうぶつ"},{f:"🐮",n:"もーちゃん",r:1,g:"どうぶつ"},{f:"🐷",n:"ぶーちゃん",r:1,g:"どうぶつ"},
+  {f:"🐔",n:"ぴよこ",r:1,g:"どうぶつ"},{f:"🐑",n:"もふもふ",r:1,g:"どうぶつ"},{f:"🦊",n:"ヒノしっぽ",r:1,g:"どうぶつ"},
+  {f:"🦁",n:"ライりん",r:1,g:"どうぶつ"},{f:"🐯",n:"トラっこ",r:1,g:"どうぶつ"},{f:"🦝",n:"あらいぐまん",r:1,g:"どうぶつ"},
+  {f:"🦦",n:"カワウソん",r:1,g:"どうぶつ"},{f:"🦥",n:"ナマケもん",r:1,g:"どうぶつ"},{f:"🐿️",n:"リスっこ",r:1,g:"どうぶつ"},
+  {f:"🦔",n:"はりぼう",r:1,g:"どうぶつ"},{f:"🦜",n:"おしゃべりん",r:1,g:"どうぶつ"},{f:"🦩",n:"フラミんご",r:1,g:"どうぶつ"},
+  {f:"🦚",n:"くじゃくん",r:1,g:"どうぶつ"},{f:"🦉",n:"フクロ先生",r:1,g:"どうぶつ"},{f:"🐦",n:"ことりちゃん",r:1,g:"どうぶつ"},
+  // ── ゆるかわ系 海・水（r1〜2） ──
+  {f:"🐟",n:"さかなっこ",r:1,g:"うみ"},{f:"🐠",n:"ぱくお",r:1,g:"うみ"},{f:"🐡",n:"ふぐっち",r:1,g:"うみ"},
+  {f:"🦐",n:"えびにゃん",r:1,g:"うみ"},{f:"🦀",n:"カニさん",r:1,g:"うみ"},{f:"🐚",n:"かいがらん",r:1,g:"うみ"},
+  {f:"🐙",n:"たこたん",r:2,g:"うみ"},{f:"🦑",n:"いかっぷ",r:2,g:"うみ"},{f:"🐬",n:"イルかわ",r:2,g:"うみ"},
+  {f:"🐳",n:"くじらん",r:2,g:"うみ"},{f:"🦭",n:"アザらし",r:2,g:"うみ"},{f:"🐊",n:"わにっこ",r:2,g:"うみ"},
+  // ── ゆるかわ系 こんちゅう・ちいさな生き物（r1） ──
+  {f:"🦋",n:"ちょうりん",r:1,g:"むし"},{f:"🐛",n:"いもむし丸",r:1,g:"むし"},{f:"🐌",n:"かたつむりん",r:1,g:"むし"},
+  {f:"🐞",n:"てんとうっこ",r:1,g:"むし"},{f:"🦗",n:"コオロギん",r:1,g:"むし"},{f:"🪲",n:"カブっこ",r:1,g:"むし"},
+  {f:"🪳",n:"ゴキっちゃん",r:1,g:"むし"},{f:"🐜",n:"ありんこ",r:1,g:"むし"},{f:"🦟",n:"かっこ",r:1,g:"むし"},
+  // ── ゆるかわ系 たべもの（r1〜2） ──
+  {f:"🍙",n:"おにぎりん",r:1,g:"たべもの"},{f:"🍡",n:"だんごちゃん",r:1,g:"たべもの"},{f:"🍩",n:"ドーナッちゃん",r:1,g:"たべもの"},
+  {f:"🍰",n:"ケーキっこ",r:1,g:"たべもの"},{f:"🧁",n:"カップケーキん",r:1,g:"たべもの"},{f:"🍦",n:"ソフトくりーむ",r:1,g:"たべもの"},
+  {f:"🍭",n:"ぺろぺろん",r:1,g:"たべもの"},{f:"🍬",n:"キャンディちゃん",r:1,g:"たべもの"},{f:"🍫",n:"チョコっこ",r:1,g:"たべもの"},
+  {f:"🍓",n:"いちごん",r:2,g:"たべもの"},{f:"🍇",n:"ぶどうっこ",r:2,g:"たべもの"},{f:"🍉",n:"すいかん",r:2,g:"たべもの"},
+  {f:"🌽",n:"とうもろこしん",r:1,g:"たべもの"},{f:"🥕",n:"にんじんっこ",r:1,g:"たべもの"},{f:"🍄",n:"きのこん",r:2,g:"たべもの"},
+  {f:"🧊",n:"こおりん",r:2,g:"たべもの"},{f:"🍜",n:"ラーメんん",r:1,g:"たべもの"},{f:"🍣",n:"おすしん",r:2,g:"たべもの"},
+  // ── ポケモン風 くさ・みず・ほのおタイプ（r2〜3） ──
+  {f:"🌿",n:"クサモン",r:2,g:"くさ"},{f:"🌱",n:"メバエル",r:2,g:"くさ"},{f:"🍃",n:"ハッパード",r:2,g:"くさ"},
+  {f:"🌸",n:"ハナミン",r:2,g:"くさ"},{f:"🌺",n:"フラワード",r:2,g:"くさ"},{f:"🌻",n:"ヒマワリン",r:2,g:"くさ"},
+  {f:"🌴",n:"ヤシラス",r:3,g:"くさ"},{f:"🎋",n:"タケザード",r:3,g:"くさ"},{f:"🍀",n:"クローバン",r:2,g:"くさ"},
+  {f:"💧",n:"ミズリン",r:2,g:"みず"},{f:"🌊",n:"ナミード",r:2,g:"みず"},{f:"❄️",n:"コオリン",r:2,g:"みず"},
+  {f:"🌧️",n:"アメフラシ",r:2,g:"みず"},{f:"⛲",n:"イズミン",r:3,g:"みず"},{f:"🫧",n:"アワワン",r:2,g:"みず"},
+  {f:"🔥",n:"ホムラン",r:2,g:"ほのお"},{f:"🕯️",n:"ロウソクン",r:2,g:"ほのお"},{f:"🌋",n:"カザンマル",r:3,g:"ほのお"},
+  {f:"☀️",n:"タイヨウン",r:3,g:"ほのお"},{f:"✨",n:"キラリン",r:2,g:"ほのお"},{f:"💥",n:"バクハツン",r:3,g:"ほのお"},
+  // ── ポケモン風 でんき・こおり・エスパー（r2〜3） ──
+  {f:"⚡",n:"デンキチ",r:2,g:"でんき"},{f:"🔋",n:"バッテリン",r:2,g:"でんき"},{f:"💡",n:"ヒカリン",r:2,g:"でんき"},
+  {f:"🌩️",n:"カミナリン",r:3,g:"でんき"},{f:"📡",n:"アンテナン",r:3,g:"でんき"},
+  {f:"🧊",n:"フリーズン",r:2,g:"こおり"},{f:"⛄",n:"ユキダルマン",r:2,g:"こおり"},{f:"🌨️",n:"ふぶきん",r:3,g:"こおり"},
+  {f:"🔮",n:"エスパーン",r:3,g:"エスパー"},{f:"🌀",n:"サイコマル",r:3,g:"エスパー"},{f:"💫",n:"テレパシン",r:3,g:"エスパー"},
+  {f:"🧿",n:"マナコン",r:3,g:"エスパー"},{f:"🎱",n:"ふしぎだまん",r:3,g:"エスパー"},
+  // ── ポケモン風 むし・いわ・じめん（r2〜3） ──
+  {f:"🦎",n:"トカゲール",r:2,g:"いわ"},{f:"🪨",n:"ガンセキン",r:2,g:"いわ"},{f:"⛰️",n:"ヤマドン",r:3,g:"いわ"},
+  {f:"🌍",n:"チキュウン",r:3,g:"じめん"},{f:"🏜️",n:"サバクン",r:2,g:"じめん"},{f:"🌑",n:"ドロドロン",r:2,g:"じめん"},
+  {f:"🦗",n:"バグーン",r:2,g:"むし"},{f:"🕷️",n:"クモード",r:2,g:"むし"},{f:"🦂",n:"スコルピン",r:3,g:"むし"},
+  // ── ポケモン風 ゴースト・あく・ドラゴン（r3〜4） ──
+  {f:"👻",n:"ゴースリン",r:3,g:"ゴースト"},{f:"💀",n:"ガイコツン",r:3,g:"ゴースト"},{f:"🎃",n:"カボチャオ",r:3,g:"ゴースト"},
+  {f:"🦇",n:"コウモリン",r:3,g:"ゴースト"},{f:"🌑",n:"ダークマン",r:3,g:"あく"},{f:"🕶️",n:"クールん",r:3,g:"あく"},
+  {f:"🐍",n:"ヘビィン",r:3,g:"あく"},{f:"🦹",n:"ワルモン",r:3,g:"あく"},
+  {f:"🐲",n:"ドラみん",r:3,g:"ドラゴン"},{f:"🐉",n:"りゅうまる",r:3,g:"ドラゴン"},{f:"🦕",n:"のんびりザウルス",r:3,g:"ドラゴン"},
+  {f:"🦖",n:"レックスん",r:3,g:"ドラゴン"},{f:"🪄",n:"マジカルン",r:3,g:"ドラゴン"},
+  // ── ポケモン風 はがね・フェアリー（r3〜4） ──
+  {f:"⚙️",n:"ギアーン",r:3,g:"はがね"},{f:"🔩",n:"ボルトん",r:3,g:"はがね"},{f:"🛡️",n:"シールドン",r:3,g:"はがね"},
+  {f:"⚔️",n:"ソードん",r:3,g:"はがね"},{f:"🤖",n:"ロボっこ",r:3,g:"はがね"},
+  {f:"🧚",n:"フェアリん",r:3,g:"フェアリー"},{f:"🌈",n:"レインボン",r:3,g:"フェアリー"},{f:"💎",n:"ダイヤモン",r:4,g:"フェアリー"},
+  {f:"🧝",n:"エルフィン",r:3,g:"フェアリー"},{f:"🦋✨",n:"プリズマン",r:4,g:"フェアリー"},
+  // ── 伝説・進化系（r4） ──
+  {f:"🌟🦊",n:"セイれいフォクス",r:4,g:"でんせつ"},{f:"🌈🦄",n:"レインボーユニ",r:4,g:"でんせつ"},
+  {f:"✨🐉",n:"ゴールドりゅう",r:4,g:"でんせつ"},{f:"🌙🐺",n:"つきのウル",r:4,g:"でんせつ"},
+  {f:"🔥🦊",n:"フレアヒノ",r:3,g:"でんせつ"},{f:"🦊✨",n:"ヒノっくす",r:2,g:"でんせつ"},
+  {f:"🌠",n:"ながれぼしん",r:4,g:"でんせつ"},{f:"🌌",n:"ギャラクシン",r:4,g:"でんせつ"},
+  {f:"⭐",n:"スターマン",r:4,g:"でんせつ"},{f:"🌙",n:"つきみん",r:3,g:"でんせつ"},
+  {f:"☀️✨",n:"ソーラーキング",r:4,g:"でんせつ"},{f:"🌍✨",n:"アースガーディアン",r:4,g:"でんせつ"},
+  {f:"🦅",n:"フライキング",r:4,g:"でんせつ"},{f:"🔮✨",n:"クリスタルエスパー",r:4,g:"でんせつ"},
+  {f:"💠",n:"アイスクラウン",r:4,g:"でんせつ"},{f:"🌋✨",n:"ヴォルカノス",r:4,g:"でんせつ"},
+  // ── ゆるかわ 自然・空・天気（r1〜3） ──
+  {f:"⭐",n:"ほしっこ",r:1,g:"そら"},{f:"🌙",n:"お月さまん",r:2,g:"そら"},{f:"☁️",n:"くもっこ",r:1,g:"そら"},
+  {f:"🌈",n:"にじっこ",r:2,g:"そら"},{f:"❄️",n:"ゆきっこ",r:1,g:"そら"},{f:"🌸",n:"さくらっこ",r:1,g:"そら"},
+  {f:"🍂",n:"もみじん",r:1,g:"しぜん"},{f:"🌾",n:"いねほん",r:1,g:"しぜん"},{f:"🎄",n:"ツリーん",r:2,g:"しぜん"},
+  {f:"🌊",n:"なみにゃん",r:2,g:"しぜん"},{f:"🪸",n:"サンゴっこ",r:2,g:"しぜん"},{f:"🍁",n:"カエデん",r:1,g:"しぜん"},
+  // ── ゆるかわ おばけ・ふしぎ（r2〜3） ──
+  {f:"👾",n:"エイリアん",r:2,g:"ふしぎ"},{f:"🛸",n:"UFOっこ",r:3,g:"ふしぎ"},{f:"🤡",n:"ピエロっこ",r:2,g:"ふしぎ"},
+  {f:"🎭",n:"お面っこ",r:2,g:"ふしぎ"},{f:"🧸",n:"クマぬいぐるみ",r:1,g:"ふしぎ"},{f:"🪆",n:"マトリョーシん",r:2,g:"ふしぎ"},
+  {f:"🎪",n:"サーカスん",r:2,g:"ふしぎ"},{f:"🎩",n:"マジシャん",r:3,g:"ふしぎ"},{f:"🧙",n:"まほうつかいん",r:3,g:"ふしぎ"},
+  {f:"🧜",n:"マーメイドん",r:3,g:"ふしぎ"},{f:"🧛",n:"ヴァンパイアん",r:3,g:"ふしぎ"},{f:"🧞",n:"ジーニーん",r:3,g:"ふしぎ"},
+  // ── ポケモン風 みず進化系（r2〜4） ──
+  {f:"🌊🐬",n:"アクアイルフィン",r:3,g:"みず"},{f:"💧🐲",n:"ウォータードラゴン",r:4,g:"みず"},
+  {f:"🧊🦈",n:"ブリザードシャーク",r:4,g:"みず"},{f:"🌀💧",n:"サイクロンウェーブ",r:3,g:"みず"},
+  // ── ポケモン風 ほのお進化系（r3〜4） ──
+  {f:"🔥🦁",n:"フレアライオン",r:3,g:"ほのお"},{f:"🌋🐲",n:"マグマドラゴン",r:4,g:"ほのお"},
+  {f:"☀️🦅",n:"ソーラーフェニックス",r:4,g:"ほのお"},{f:"🔥⚡",n:"サンダーフレア",r:4,g:"ほのお"},
+  // ── ポケモン風 くさ進化系（r3〜4） ──
+  {f:"🌿🦋",n:"フォレストバタフライ",r:3,g:"くさ"},{f:"🌺🐲",n:"フラワードラゴン",r:4,g:"くさ"},
+  {f:"🍃⚡",n:"リーフサンダー",r:3,g:"くさ"},{f:"🌳🦁",n:"ツリーライオン",r:4,g:"くさ"},
+  // ── ポケモン風 でんき進化系（r3〜4） ──
+  {f:"⚡🦁",n:"サンダーライオン",r:4,g:"でんき"},{f:"⚡🐲",n:"サンダードラゴン",r:4,g:"でんき"},
+  {f:"💡🦋",n:"ライトバタフライ",r:3,g:"でんき"},{f:"⚡🌊",n:"ストームウェーブ",r:4,g:"でんき"},
+  // ── ポケモン風 エスパー進化系（r4） ──
+  {f:"🔮🦋",n:"サイキックバタフライ",r:4,g:"エスパー"},{f:"🌌🦄",n:"コスモスユニコーン",r:4,g:"エスパー"},
+  {f:"💫🐉",n:"ドリームドラゴン",r:4,g:"エスパー"},
+  // ── ゆるかわ おともだち（r1） ──
+  {f:"🧡",n:"ハートっこ",r:1,g:"おともだち"},{f:"🌟",n:"キラっこ",r:1,g:"おともだち"},{f:"🎵",n:"おんがくん",r:1,g:"おともだち"},
+  {f:"📚",n:"ほんっこ",r:1,g:"おともだち"},{f:"✏️",n:"えんぴつん",r:1,g:"おともだち"},{f:"🎨",n:"えのぐん",r:1,g:"おともだち"},
+  {f:"⚽",n:"サッカーん",r:1,g:"おともだち"},{f:"🎮",n:"ゲームっこ",r:1,g:"おともだち"},{f:"🧩",n:"パズルん",r:1,g:"おともだち"},
+  {f:"🎯",n:"まとあてん",r:2,g:"おともだち"},{f:"🏆",n:"トロフィーん",r:2,g:"おともだち"},{f:"🎖️",n:"メダルっこ",r:2,g:"おともだち"},
+];
+
+// ── 月限定キャラ（limited=月 1〜12） ──
+const MONS_LIMITED = [
+  {f:"🎍✨",n:"お正月キツネ",r:4,g:"限定",limited:1},   // 1月
+  {f:"💝🐻",n:"バレンタインベア",r:4,g:"限定",limited:2}, // 2月
+  {f:"🌸🦊",n:"さくらヒノ",r:4,g:"限定",limited:3},      // 3月
+  {f:"🌷🦋",n:"はるかぜちょうりん",r:4,g:"限定",limited:4},// 4月
+  {f:"🎏🐬",n:"こどもの日イルかわ",r:4,g:"限定",limited:5},// 5月
+  {f:"🐌🌧️",n:"つゆカタツムリん",r:4,g:"限定",limited:6}, // 6月
+  {f:"🎆🦊",n:"なつまつりヒノ",r:4,g:"限定",limited:7},   // 7月
+  {f:"🌻☀️",n:"ひまわりキング",r:4,g:"限定",limited:8},   // 8月
+  {f:"🌕🐰",n:"お月見うさぴょん",r:4,g:"限定",limited:9}, // 9月
+  {f:"🍁🐯",n:"もみじトラっこ",r:4,g:"限定",limited:10},  // 10月
+  {f:"🍂🦔",n:"どんぐりはりぼう",r:4,g:"限定",limited:11},// 11月
+  {f:"🎅🐻",n:"サンタくまっこ",r:4,g:"限定",limited:12}, // 12月
+];
+// 今月の限定キャラを通常プールに合流（プール自体には含めず別管理）
+function thisMonthLimited(){ return MONS_LIMITED.filter(m=>m.limited===new Date().getMonth()+1); }
+// 全キャラ（通常＋今月限定）のインデックスつきリスト
+function allMons(){ return [...MONS,...thisMonthLimited()]; }
+const KANJI = [
+  ["願い","ねがい"],["健康","けんこう"],["競争","きょうそう"],["努力","どりょく"],
+  ["成功","せいこう"],["結果","けっか"],["観察","かんさつ"],["説明","せつめい"],
+  ["機械","きかい"],["信号","しんごう"],["関係","かんけい"],["必要","ひつよう"],
+  ["季節","きせつ"],["牧場","ぼくじょう"],["飛行","ひこう"],["改良","かいりょう"],
+  ["希望","きぼう"],["卒業","そつぎょう"],["協力","きょうりょく"],["祝日","しゅくじつ"],
+  ["参加","さんか"],["連続","れんぞく"],["最高","さいこう"],["材料","ざいりょう"],
+  ["産業","さんぎょう"],["典型","てんけい"],["伝説","でんせつ"],["特別","とくべつ"],
+  ["熱中","ねっちゅう"],["梅雨","つゆ"],["博物館","はくぶつかん"],["敗北","はいぼく"],
+  ["変化","へんか"],["便利","べんり"],["勇気","ゆうき"],["養分","ようぶん"],
+  ["利益","りえき"],["陸地","りくち"],["良心","りょうしん"],["積極","せっきょく"],
+  ["輪","わ"],["熊","くま"],["塩","しお"],["孫","まご"]
+];
+
+const CATS = ["たしざん","ひきざん","かけざん","わりざん","□をもとめる","文章題","先取り","かんじ","どっかい","りか","しゃかい","えいご"];
+const SUBJECTS = {
+  "算数":["たしざん","ひきざん","かけざん","わりざん","□をもとめる","文章題","先取り"],
+  "国語":["かんじ","どっかい"],
+  "理科":["りか"],
+  "社会":["しゃかい"],
+  "英語":["えいご"]
+};
+const SUBJ_ICON={算数:"🔢",国語:"✒️",理科:"🔬",社会:"🗾",英語:"🔤"};
+
+// 理科 問題バンク（全問選択式・小4範囲）
+const RIKA=[
+  ["水を冷やしていくと、0℃でどうなる？",["こおる","ふっとうする","気体になる","とける"],0],
+  ["水は何℃でふっとうする？",["100℃","50℃","0℃","30℃"],0],
+  ["とじこめた空気をギュッとおすと、体積は？",["小さくなる","大きくなる","変わらない","消える"],0],
+  ["かん電池の向きを ぎゃくにすると、モーターの回り方は？",["ぎゃくに回る","止まる","速くなる","変わらない"],0],
+  ["金ぞくをあたためると、熱はどのように伝わる？",["あたためた所から順に","全体が同時に","上から下だけ","伝わらない"],0],
+  ["かげが できるのは、太陽の どちら側？",["反対がわ","同じ側","真上","見えない"],0],
+  ["星の明るさで いちばん明るいものを 何という？",["1等星","6等星","北極星","流れ星"],0],
+  ["ヘチマがよく育って 葉がしげるのは どの季節？",["夏","冬","秋のおわり","真冬"],0],
+  ["うでを まげるとき、ちぢむ きん肉は どこ？",["内側","外側","ひざ","せなか"],0],
+  ["水が じょうはつすると、すがたは？",["気体（水じょう気）","こおり","土","石"],0],
+  ["月の見える形が 日によって 変わるのは なぜ？",["太陽の光の当たり方が変わる","月が消えるから","雲のせい","星のせい"],0],
+  ["かん電池2こを 直列につなぐと、モーターは？",["速く回る","止まる","ぎゃくに回る","変わらない"],0],
+  ["電流の大きさを はかる道具は？",["けん流計","ものさし","温度計","はかり"],0],
+  ["冷たいコップの まわりにつく 水てきは どこから？",["空気中の水じょう気","コップの中の水","手のあせ","雨"],0],
+  ["水たまりが しばらくすると なくなるのは？",["じょう発して空気中へ","地面が食べた","氷になった","風がはこんだ"],0],
+  ["とじこめた水を おすと、体積は？",["変わらない","小さくなる","大きくなる","消える"],0],
+  ["フラスコの空気を あたためると、体積は？",["ふえる","へる","変わらない","なくなる"],0],
+  ["体をささえ、内ぞうを守るのは？",["ほね（こっかく）","ひふ","血","空気"],0],
+  ["うでが 曲がるのは どこで？",["関節","ほねの まん中","つめ","かみの毛"],0],
+  ["月は どちらから のぼる？",["東","西","南","北"],0],
+  ["星も 太陽や月と同じで、どちらへ うごいて見える？",["東から西","西から東","下から上","うごかない"],0],
+  ["夏に よく鳴く こん虫は？",["セミ","スズムシ","コオロギ","テントウムシ"],0],
+  ["温度計の 目もりを 読むときは どこから見る？",["真横（目の高さ）","ななめ上","遠くから","下から"],0],
+  ["とじこめた空気を あたためたり 冷やしたりすると、体積が 大きく変わるのは？",["空気","水","金ぞく","石"],0]
+];
+const SHAKAI=[
+  ["地図で ふつう 上は どの方角？",["北","南","東","西"],0],
+  ["地図で 右は どの方角？",["東","西","南","北"],0],
+  ["『文』の 地図記号は 何をあらわす？",["学校","お寺","病院","神社"],0],
+  ["お寺を あらわす 地図記号は？",["卍","文","〒","♨"],0],
+  ["飲み水を つくる しせつは？",["じょう水場","下水処理場","せいそう工場","発電所"],0],
+  ["使った水を きれいにして もどす しせつは？",["下水処理場","じょう水場","ダム","用水路"],0],
+  ["ごみを もやす しせつは？",["せいそう工場","じょう水場","用水路","ダム"],0],
+  ["川の水を ためて こう水を ふせぐ しせつは？",["ダム","下水道","じょう水場","港"],0],
+  ["119番で つながるのは？",["消防・救急","けいさつ","水道局","市役所"],0],
+  ["事故や事件のとき よぶ 電話番号は？",["110番","119番","117番","118番"],0],
+  ["資源ごみとして 出すのは？",["かん・びん・ペットボトル","生ごみ","われたガラス","電池"],0],
+  ["日本で いちばん 広い 都道府県は？",["北海道","東京都","愛知県","大阪府"],0],
+  ["日本の 都道府県は ぜんぶで いくつ？",["47","43","50","39"],0],
+  ["愛知県は どの地方？",["中部地方","関東地方","近畿地方","九州地方"],0],
+  ["愛知県の 県庁が ある市は？",["名古屋市","半田市","豊田市","岡崎市"],0],
+  ["半田市など 知多半島で 昔から さかんな ものづくりは？",["お酢づくり","雪まつり","炭こう","ぶどう作り"],0],
+  ["常滑（とこなめ）で 昔から つくられているのは？",["やきもの","自動車","ふね","紙"],0],
+  ["愛知県で とくに さかんな 工業は？",["自動車などの きかい工業","せんい工業","水産業","林業"],0],
+  ["♨ の 地図記号は 何？",["温泉","学校","港","畑"],0],
+  ["田や畑に 水を ひくための ものは？",["用水路","下水道","ダムの上","信号"],0],
+  ["水が 少ない土地に 昔の人が 水を引くため つくったものは？",["用水路","鉄道","高速道路","ビル"],0],
+  ["地しんや こう水に そなえて 用意しておくものは？",["ひじょう用の水や食料","ゲーム","まんが","おかし だけ"],0],
+  ["地図記号 〒 は 何を あらわす？",["ゆうびん局","病院","学校","交番"],0],
+  ["くらしを 守るため、夜も まちを 見回るのは？",["けいさつ（おまわりさん）","花屋さん","パン屋さん","せんせい"],0]
+];
+const DOKKAI=[
+  ["たろうは 朝早く 起きて、公園へ 走りに 行きました。空は まだ少し暗く、星が 一つ 光っていました。",
+   "たろうが 公園へ 行ったのは いつ？",["朝早く","昼","夕方","夜おそく"],0],
+  ["みかんは 5こ ありました。妹に 2こ あげると、お皿には 3こ のこりました。",
+   "お皿に のこった みかんは 何こ？",["3こ","2こ","5こ","7こ"],0],
+  ["雨が ふってきたので、はなこは かさを さしました。でも 風が 強くて、かさは すぐに うらがえって しまいました。",
+   "かさが うらがえった 理由は？",["風が強かったから","雨がやんだから","こわれていたから","重かったから"],0],
+  ["けんたは サッカーが 大すきです。でも 今日は 足を けがして、見学する ことに しました。",
+   "けんたは 今日 どうした？",["見学した","試合に出た","休んだ","走った"],0],
+  ["図書室では 静かに します。本を 読む人の じゃまに ならないように するためです。",
+   "図書室で 静かに する わけは？",["読む人のじゃまにならないため","ねむいから","先生がこわいから","とくに理由はない"],0],
+  ["そらは くもって きました。遠くで かみなりの 音も しています。お母さんは「早く 帰ろう」と 言いました。",
+   "お母さんが 早く 帰ろうと 言った わけは？",["天気が悪くなりそうだから","おなかがすいたから","ねむいから","お店がしまるから"],0],
+  ["公園のベンチに、手ぶくろが かた方だけ おちていました。さむい日なのに、もう一方は 見あたりません。",
+   "この文から 分かることは？",["手ぶくろは かた方だけ おちていた","両方おちていた","あたたかい日だった","ベンチはなかった"],0],
+  ["ゆうとは テストで まちがえた 問題を ノートに 書きうつし、もう一度 といてみました。",
+   "ゆうとが したことは？",["まちがいを 見直して とき直した","新しい本を 買った","先生に 文句を 言った","そのままにした"],0],
+  ["空が 赤く そまり、鳥たちが ねぐらへ もどっていきます。一日が おわろうと しています。",
+   "いまは いつごろ？",["夕方","朝","真夜中","お昼"],0],
+  ["あやは 妹に おもちゃを ゆずりました。妹が ないていたからです。",
+   "あやが ゆずった 理由は？",["妹が ないていたから","おもちゃが きらいだから","こわれていたから","お母さんに しかられたから"],0],
+  ["めだかは 水草の かげに たまごを うみます。たまごを 食べられないように するためです。",
+   "水草のかげに うむ 理由は？",["たまごを 食べられないため","水草が すきだから","あたたかいから","ひかりが すきだから"],0],
+  ["雪が つもると、車は ゆっくり 走ります。すべって あぶないからです。",
+   "ゆっくり 走る 理由は？",["すべると あぶないから","急いでいないから","雪が きれいだから","ガソリンの ため"],0],
+  ["たねは、水と 日光と あたたかさが あると めを 出します。",
+   "めを 出すのに 必要 ないのは？",["くらやみ","水","日光","あたたかさ"],0],
+  ["みんなで 公園を そうじしたら、ごみが なくなり、小さな子も 安心して あそべるように なりました。",
+   "そうじの けっか どうなった？",["安心して あそべるように なった","ごみが ふえた","公園が なくなった","だれも 来なくなった"],0]
+];
+// 英語 問題バンク（小4〜5・しっかりめ）
+// 形式：[質問, 選択肢4こ, 正解インデックス0]
+const EIGO=[
+  // アルファベット
+  ["'A' の 小文字は？",["a","b","d","q"],0],
+  ["'B' の 小文字は？",["b","d","p","q"],0],
+  ["アルファベットで 'E' の 次の文字は？",["F","G","D","H"],0],
+  // 動物
+  ["🐱 を 英語で いうと？",["cat","dog","bird","fish"],0],
+  ["🐶 を 英語で いうと？",["dog","cat","cow","pig"],0],
+  ["🐟 を 英語で いうと？",["fish","bird","frog","duck"],0],
+  ["🐸 を 英語で いうと？",["frog","bear","mouse","snake"],0],
+  ["🐻 を 英語で いうと？",["bear","deer","lion","wolf"],0],
+  ["🐇 を 英語で いうと？",["rabbit","hamster","mouse","cat"],0],
+  // 色
+  ["赤色 を 英語で いうと？",["red","blue","green","yellow"],0],
+  ["青色 を 英語で いうと？",["blue","red","pink","black"],0],
+  ["黄色 を 英語で いうと？",["yellow","orange","white","purple"],0],
+  ["緑色 を 英語で いうと？",["green","brown","blue","gray"],0],
+  // 食べ物
+  ["🍎 を 英語で いうと？",["apple","orange","grape","melon"],0],
+  ["🍌 を 英語で いうと？",["banana","mango","lemon","peach"],0],
+  ["🍕 を 英語で いうと？",["pizza","pasta","bread","rice"],0],
+  ["🍙 を 英語で いうと？",["rice ball","rice cake","bread","sushi"],0],
+  ["🍰 を 英語で いうと？",["cake","pie","cookie","candy"],0],
+  // 数字・曜日
+  ["Monday の 日本語は？",["月曜日","火曜日","水曜日","木曜日"],0],
+  ["Friday の 日本語は？",["金曜日","木曜日","土曜日","日曜日"],0],
+  ["Sunday の 日本語は？",["日曜日","土曜日","月曜日","火曜日"],0],
+  ["January の 日本語は？",["1月","2月","3月","4月"],0],
+  ["December の 日本語は？",["12月","11月","10月","9月"],0],
+  // 学校・文具
+  ["pencil の 日本語は？",["えんぴつ","消しゴム","ノート","ものさし"],0],
+  ["book の 日本語は？",["本","ペン","かばん","つくえ"],0],
+  ["school の 日本語は？",["学校","公園","病院","図書館"],0],
+  // 簡単な会話・フレーズ
+  ["'Good morning!' の 意味は？",["おはよう！","こんにちは！","おやすみ！","ありがとう！"],0],
+  ["'Thank you!' の 意味は？",["ありがとう！","ごめんね！","おはよう！","さようなら！"],0],
+  ["'I'm hungry.' の 意味は？",["おなかがすいた","つかれた","ねむい","たのしい"],0],
+  ["'How are you?' の 意味は？",["元気ですか？","名前は？","何歳ですか？","どこに住んでいる？"],0],
+  ["'I like dogs.' の 意味は？",["犬が好きです","犬がきらいです","犬がいます","犬を見ました"],0],
+  // 体・家族
+  ["hand の 日本語は？",["手","足","目","耳"],0],
+  ["eye の 日本語は？",["目","鼻","口","頭"],0],
+  ["mother の 日本語は？",["お母さん","お父さん","おねえさん","おばあさん"],0],
+  ["brother の 日本語は？",["お兄さん（弟）","お姉さん（妹）","お父さん","おじさん"],0],
+  // 身のまわり
+  ["water の 日本語は？",["水","火","風","土"],0],
+  ["sun の 日本語は？",["太陽","月","星","雲"],0],
+  ["flower の 日本語は？",["花","木","草","葉っぱ"],0],
+  ["big の 日本語は？",["大きい","小さい","長い","重い"],0],
+  ["fast の 日本語は？",["速い","遅い","高い","低い"],0]
+];
+
+// 教科横断（適性検査ふう・週1）
+const CROSS=[
+  ["クラスで すきな くだものを しらべました。りんご8人・みかん5人・ぶどう3人・もも4人。いちばん 人気は？",
+   "資料を 読みとろう",["りんご","みかん","ぶどう","もも"],0],
+  ["さくらは 9時に 家を出て、20分 歩いて 学校に つきました。学校に ついた 時こくは？",
+   "算数×生活",["9時20分","9時2分","8時40分","10時"],0],
+  ["『水は 高い所から 低い所へ 流れる』。川の水が 最後に たどりつく 場所は？",
+   "理科×ろんり",["海","山のてっぺん","空","雲"],0],
+  ["買い物に 1000円 もって行き、380円の本と 250円の ノートを 買いました。おつりは？",
+   "算数×生活",["370円","630円","270円","470円"],0]
+];
+
+/* ===================== 保存（localStorage） ===================== */
+const KEY="cloud_quest_v1";
+let mem=null;
+async function loadState(){
+  const def={name:"ゆうき",exp:0,coins:0,streak:0,lastPlay:null,lastChest:null,
+    dex:[0],history:[],eggs:0,opMonth:monthStr(),opPoints:0,opPrev:0,
+    settings:{rasha:"毎日",cross:true,diff:"ふつう",yenPer:1,cap:1000,vol:"しっかり"},
+    stats:Object.fromEntries(CATS.map(c=>[c,{a:0,c:0}]))};
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(raw) return {...def,...JSON.parse(raw)};
+  }catch(e){}
+  return def;
+}
+async function saveState(){
+  try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){ mem=JSON.stringify(S); }
+}
+let S=null;
+
+/* ===================== レベル・相棒 ===================== */
+function needFor(lv){ return 60 + (lv-1)*60; }            // Lv1→2は60, だんだん増える
+function levelInfo(){
+  let lv=1, rest=S.exp;
+  while(rest>=needFor(lv)){ rest-=needFor(lv); lv++; if(lv>=99)break; }
+  return {lv, into:rest, need:needFor(lv)};
+}
+function buddyOf(lv){
+  if(lv>=15) return {f:"🌟🦊",n:"セイレイフォクス",s:"でんせつの すがた！"};
+  if(lv>=10) return {f:"🔥🦊",n:"フレアフォクス",s:"ほのおを あやつる"};
+  if(lv>=6)  return {f:"🦊✨",n:"ヒノックス",s:"しんか した！"};
+  if(lv>=3)  return {f:"🦊",n:"コぎつね ヒノ",s:"げんきな あかちゃん"};
+  return {f:"🥚",n:"ナゾのタマゴ",s:"なにがうまれるかな？"};
+}
+
+/* ===================== 問題生成 ===================== */
+const ri=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+function genCalc(){
+  // 苦手分野ほど出やすく重み付け
+  const calcCats=["たしざん","ひきざん","かけざん","わりざん","□をもとめる"];
+  const weighted=[];
+  calcCats.forEach(c=>{const st=S.stats[c]; const rate=st.a? st.c/st.a:0.5; const w=Math.round((1.2-rate)*5)+1; for(let i=0;i<w;i++)weighted.push(c);});
+  const cat=weighted[ri(0,weighted.length-1)];
+  const D=(S.settings&&S.settings.diff)||"ふつう";
+  let q,ans,sub="";
+  if(cat==="たしざん"){
+    const r=D==="やさしい"?[10,99]:D==="むずかしい"?[1000,9999]:[120,4800];
+    const a=ri(r[0],r[1]),b=ri(r[0],r[1]);q=`${a} ＋ ${b}`;ans=a+b;
+  }else if(cat==="ひきざん"){
+    const hi=D==="やさしい"?99:D==="むずかしい"?9999:9500;const lo=D==="やさしい"?20:100;
+    const a=ri(lo+50,hi),b=ri(lo,a-10);q=`${a} − ${b}`;ans=a-b;
+  }else if(cat==="かけざん"){
+    let a,b;
+    if(D==="やさしい"){a=ri(2,9);b=ri(2,9);}
+    else if(D==="むずかしい"){a=ri(100,999);b=ri(12,99);}
+    else{a=ri(12,89);b=ri(12,99);}
+    q=`${a} × ${b}`;ans=a*b;
+  }else if(cat==="わりざん"){
+    const dmax=D==="やさしい"?5:9;const qhi=D==="むずかしい"?189:89;const qlo=D==="やさしい"?2:11;
+    const d=ri(3,dmax),qt=ri(qlo,qhi),r=ri(0,d-1);const dv=d*qt+r;
+    q=`${dv} ÷ ${d}`;ans=qt;sub=(r?"あまりも こたえてね":"わりきれるよ");return{cat,subj:"算数",q,ans,sub,rem:r,div:true};
+  }else{ // □をもとめる
+    const big=D==="むずかしい"?900:D==="やさしい"?50:500;
+    const t=ri(0,2);
+    if(t===0){const a=ri(20,big),x=ri(10,big);q=`${a} ＋ □ ＝ ${a+x}`;ans=x;}
+    else if(t===1){const x=ri(20,big),a=ri(10,x-1);q=`□ − ${a} ＝ ${x-a}`;ans=x;}
+    else{const b=ri(3,9),x=ri(3, D==="むずかしい"?60:30);q=`□ × ${b} ＝ ${b*x}`;ans=x;}
+    sub="□に 入る数は？";
+  }
+  return {cat,subj:"算数",q,ans,sub};
+}
+function genKanji(){
+  const [w,r]=KANJI[ri(0,KANJI.length-1)];
+  return {cat:"かんじ",subj:"国語",q:w,ans:r,sub:"よみがなを ひらがなで"};
+}
+function pick(bank){return bank[ri(0,bank.length-1)];}
+function mc(choices,ai){ // 選択肢をシャッフルして 正解位置を返す（いつも「ア」を防ぐ）
+  const arr=choices.map((c,i)=>({c,ok:i===ai}));
+  for(let i=arr.length-1;i>0;i--){const j=ri(0,i);[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return {choices:arr.map(x=>x.c), a:arr.findIndex(x=>x.ok)};
+}
+function genRika(){const[q,c,a]=pick(RIKA);const m=mc(c,a);return{cat:"りか",subj:"理科",mc:true,q,choices:m.choices,a:m.a,sub:"えらんでね"};}
+function genShakai(){const[q,c,a]=pick(SHAKAI);const m=mc(c,a);return{cat:"しゃかい",subj:"社会",mc:true,q,choices:m.choices,a:m.a,sub:"えらんでね"};}
+function genDokkai(){const[p,q,c,a]=pick(DOKKAI);const m=mc(c,a);return{cat:"どっかい",subj:"国語",mc:true,read:p,q,choices:m.choices,a:m.a,sub:"よく読んでね"};}
+function genCross(){const[p,tag,c,a]=pick(CROSS);const m=mc(c,a);return{cat:"おうよう",subj:"てきせい",mc:true,cross:true,tier:"横断",read:p,q:tag,choices:m.choices,a:m.a,sub:"教科をまたいで考えよう"};}
+
+// 応用：文章題（算数・既習を使って考える）
+function genWord(){
+  const t=ri(0,4);
+  let read,ans;
+  if(t===0){const a=ri(40,180),n=ri(2,5),pay=Math.ceil((a*n+ri(20,300))/100)*100;read=`${a}円の おかしを ${n}こ 買って、${pay}円 はらいました。おつりは いくら？`;ans=pay-a*n;}
+  else if(t===1){const p=ri(3,8),per=ri(4,15),r=ri(0,p-1);const total=p*per+r;read=`${total}この あめを ${p}人で 同じ数ずつ 分けます。1人分は 何こ？`;ans=per;}
+  else if(t===2){const a=ri(2,12),k=ri(2,6);const b=a*k;read=`赤いテープは ${a}cm、青いテープは ${b}cm です。青は 赤の 何ばい？`;ans=k;}
+  else if(t===3){const a=ri(30,180),b=ri(20,150);read=`本を ${a}ページ 読みました。あと ${b}ページで 読み終わります。本は ぜんぶで 何ページ？`;ans=a+b;}
+  else{const a=ri(200,900),b=ri(50,a-30);read=`色紙が ${a}枚 ありました。${b}枚 つかいました。のこりは 何枚？`;ans=a-b;}
+  return {cat:"文章題",subj:"算数",tier:"応用",read,q:"こたえ（数）は？",ans,sub:"しきを考えて 数で答えてね"};
+}
+
+// 旬：今の時期の単元＋季節（夏ver）
+// 旬：季節べつ（月で自動で切り替え）。今の単元＋季節の行事
+const SHUN_HARU=[ // 3〜5月
+  ["3月3日の 行事は？",["ひなまつり","たなばた","せつぶん","おしょうがつ"],0],
+  ["春に 南から やってくる わたり鳥は？",["ツバメ","ペンギン","ハクチョウ","ニワトリ"],0],
+  ["こどもの日（5月5日）に かざるものは？",["こいのぼり","かどまつ","ささかざり","かがみもち"],0],
+  ["桜が さくころの 季節は？",["春","夏","秋","冬"],0],
+  ["一億は 一万を 何こ あつめた数？",["10000こ","100こ","1000こ","10こ"],0],
+  ["あたたかくなって 冬みんから 出てくるのは？",["カエル","ツバメ","セミ","コスモス"],0],
+  ["4年生の理科で 春に たねをまいて 育てる植物は？",["ヘチマ","アサガオ","チューリップ","イネ"],0],
+  ["気温の うつりかわりを 表すのに よいグラフは？",["折れ線グラフ","円グラフ","絵グラフ","ひょう"],0]
+];
+const SHUN_NATSU=[ // 6〜8月
+  ["7月7日の 行事は？",["たなばた","ひなまつり","せつぶん","おしょうがつ"],0],
+  ["6〜7月の 長く雨が ふる時期を 何という？",["つゆ（梅雨）","たいふう","こがらし","はつゆき"],0],
+  ["夏の夜、南の空で S字に 見える星ざは？",["さそり座","オリオン座","カシオペヤ座","北と七星"],0],
+  ["『夏の大三角』を つくらない星は？",["シリウス","ベガ","アルタイル","デネブ"],0],
+  ["1日のうち 気温が いちばん 高くなるのは およそ いつ？",["午後2時ごろ","朝6時ごろ","正午","夜10時"],0],
+  ["夏に よく鳴く こん虫は？",["セミ","スズムシ","コオロギ","テントウムシ"],0],
+  ["一万を 1000こ あつめた数は？",["千万","百万","一億","十万"],0],
+  ["直角は 何度？",["90度","180度","60度","360度"],0],
+  ["48この あめを 6人で 等しく 分けると 1人 何こ？",["8こ","6こ","7こ","9こ"],0],
+  ["夏に 多く つかう水。飲み水を つくる ところは？",["じょう水場","ダムだけ","川","海"],0]
+];
+const SHUN_AKI=[ // 9〜11月
+  ["秋に 月を めでる 行事は？",["お月見（十五夜）","ひなまつり","たなばた","せつぶん"],0],
+  ["秋に 赤や黄色に なる 葉を 何という？",["こうよう（紅葉）","しんりょく","わかば","ふゆめ"],0],
+  ["秋の 夜に きれいな声で 鳴く虫は？",["スズムシ","セミ","カブトムシ","ホタル"],0],
+  ["実りの秋、たんぼで とれるのは？",["米（イネ）","みかん","チューリップ","ヘチマのたね"],0],
+  ["9〜10月に 日本へ 近づきやすい 強い風と雨は？",["台風","つゆ","こがらし","かみなり だけ"],0],
+  ["長方形の 面積の もとめ方は？",["たて×よこ","たて＋よこ","たて−よこ","たて÷よこ"],0],
+  ["運動会で コーナーを 走るとき、体は どちらに かたむく？",["内がわ","外がわ","うしろ","まっすぐ"],0],
+  ["秋分の日、昼と夜の 長さは およそ？",["同じ","昼が ずっと長い","夜が ずっと長い","昼がない"],0]
+];
+const SHUN_FUYU=[ // 12〜2月
+  ["冬の夜空で 目立つ、三つ星の ある星ざは？",["オリオン座","さそり座","カシオペヤ座","白鳥座"],0],
+  ["1月1日を 何という？",["元日（お正月）","せつぶん","たなばた","ひな祭り"],0],
+  ["2月3日ごろの 豆まきの 行事は？",["せつぶん","おしょうがつ","こどもの日","お月見"],0],
+  ["水を 0℃まで 冷やすと？",["こおる","ふっとうする","気体になる","あたたまる"],0],
+  ["冬、はく息が 白く見えるのは、水じょう気が ひえて？",["水てきになるから","氷になるから","消えるから","おとがでるから"],0],
+  ["オリオン座の 赤い星の 名前は？",["ベテルギウス","シリウス","ベガ","北極星"],0],
+  ["1/2 や 1/3 のような数を 何という？",["分数","小数","せい数","がい数"],0],
+  ["雪の 多い地方の 家の くふうは？",["屋根を 急にして 雪を おとす","まどを 小さくする だけ","かべを 赤くする","屋根を 平らにする"],0]
+];
+function seasonBank(){const m=new Date().getMonth()+1; if(m>=3&&m<=5)return SHUN_HARU; if(m>=6&&m<=8)return SHUN_NATSU; if(m>=9&&m<=11)return SHUN_AKI; return SHUN_FUYU;}
+function genEigo(){const[q,c,a]=pick(EIGO);const m=mc(c,a);return{cat:"えいご",subj:"英語",mc:true,tier:"英語",q,choices:m.choices,a:m.a,sub:"えらんでね 🔤"};}
+function genShun(){const[q,c,a]=pick(seasonBank());const m=mc(c,a);return{cat:"旬",subj:"旬",mc:true,tier:"旬",q,choices:m.choices,a:m.a,sub:"今の時期の もんだい"};}
+
+// 先取り：ちょっと先（小数・面積・÷2けた）を 味見
+function genSaki(){
+  const t=ri(0,3);
+  if(t===0){const x=ri(1,5),y=ri(1,4);const a=(x/10),b=(y/10);return{cat:"先取り",subj:"算数",tier:"先取り",dec:true,q:`${a.toFixed(1)} ＋ ${b.toFixed(1)}`,ans:Math.round((x+y))/10,sub:"小数の たし算（先どり）"};}
+  if(t===1){const x=ri(5,9),y=ri(1,4);return{cat:"先取り",subj:"算数",tier:"先取り",dec:true,q:`0.${x} − 0.${y}`,ans:Math.round((x-y))/10,sub:"小数の ひき算（先どり）"};}
+  if(t===2){const a=ri(3,12),b=ri(2,9);return{cat:"先取り",subj:"算数",tier:"先取り",read:`たて ${a}cm、よこ ${b}cm の 長方形の 面積は？`,q:"面積は？（cm²）",ans:a*b,sub:"面積＝たて×よこ（先どり）"};}
+  const d=ri(12,24),qt=ri(3,8);return{cat:"先取り",subj:"算数",tier:"先取り",q:`${d*qt} ÷ ${d}`,ans:qt,sub:"÷2けた（先どり）"};
+}
+
+const STAGE_NAME={1:"ステージ1：きほん",2:"ステージ2：おうよう",3:"ステージ3：英語・旬・先どり"};
+function pushQ(list,q,stage){ q.stage=stage; list.push(q); }
+function buildMission(){
+  const s=S.settings||{};
+  const vol=s.vol||"しっかり";
+  const plan={
+    "みじかめ":{calc:3,kanji:1,word:1,dokkai:1,risha:2,eigo:1,shun:1,saki:0},
+    "ふつう":  {calc:4,kanji:3,word:2,dokkai:1,risha:3,eigo:2,shun:1,saki:1},
+    "しっかり":{calc:6,kanji:4,word:3,dokkai:2,risha:4,eigo:2,shun:2,saki:1}
+  }[vol] || {calc:6,kanji:4,word:3,dokkai:2,risha:4,eigo:2,shun:2,saki:1};
+  const day=new Date().getDate(), dow=new Date().getDay();
+  const list=[];
+  // ステージ1 きほん（計算・漢字）
+  for(let i=0;i<plan.calc;i++)  pushQ(list, genCalc(), 1);
+  for(let i=0;i<plan.kanji;i++) pushQ(list, genKanji(), 1);
+  // ステージ2 おうよう（文章題・読解・理社）
+  for(let i=0;i<plan.word;i++)   pushQ(list, genWord(), 2);
+  for(let i=0;i<plan.dokkai;i++) pushQ(list, genDokkai(), 2);
+  const rasha=s.rasha||"毎日";
+  const rn = rasha==="なし"?0 : rasha==="隔日"?Math.ceil(plan.risha/2):plan.risha;
+  for(let i=0;i<rn;i++){ pushQ(list, (day+i)%2===0?genRika():genShakai(), 2); }
+  // ステージ3 英語・旬・先取り・日曜横断
+  for(let i=0;i<plan.eigo;i++) pushQ(list, genEigo(), 3);
+  for(let i=0;i<plan.shun;i++) pushQ(list, genShun(), 3);
+  for(let i=0;i<plan.saki;i++) pushQ(list, genSaki(), 3);
+  if((s.cross!==false) && dow===0) pushQ(list, genCross(), 3);
+  return list;
+}
+
+/* ===================== ミッション進行 ===================== */
+let mission=null, qi=0, missionRight=0;
+function startMission(){
+  mission=buildMission(); qi=0; missionRight=0;
+  switchTab("study"); renderQuestion();
+}
+function tagClass(q){
+  if(q.cross) return "cross";
+  if(q.tier==="旬") return "shun";
+  if(q.tier==="先取り") return "saki";
+  if(q.tier==="英語") return "eigo";
+  if(q.cat==="文章題") return "calc";
+  if(q.subj==="理科") return "rika";
+  if(q.subj==="社会") return "shakai";
+  if(q.subj==="国語") return "kokugo";
+  return "calc";
+}
+function tagLabel(q){
+  if(q.cross) return "てきせい（横断）";
+  if(q.tier==="旬") return "きょうの旬";
+  if(q.tier==="先取り") return "ちょっと先どり";
+  if(q.tier==="英語") return "🔤 えいご";
+  if(q.cat==="文章題") return "算数・文章題";
+  if(q.cat==="どっかい") return "国語・読解";
+  if(q.cat==="かんじ") return "国語・漢字";
+  if(q.subj==="理科") return "理科";
+  if(q.subj==="社会") return "社会";
+  return "算数・"+q.cat;
+}
+function renderQuestion(){
+  const area=document.getElementById("quizArea");
+  if(qi>=mission.length){ renderSummary(); return; }
+  const q=mission[qi];
+  let inner;
+  if(q.mc){
+    const marks=["ア","イ","ウ","エ"];
+    inner=`
+      ${q.read?`<div class="qbody read">${q.read}</div>`:''}
+      <div class="qsub" style="margin-top:10px">${q.q}</div>
+      <div class="choices" id="choices">
+        ${q.choices.map((c,i)=>`<button class="choice" data-i="${i}"><span class="mk">${marks[i]}</span><span>${c}</span></button>`).join("")}
+      </div>
+      <div id="rslt"></div>`;
+  }else{
+    const isK=q.cat==="かんじ";
+    const suffix = isK ? '　の よみは？' : (q.read ? '' : (q.q.includes('□') ? '' : ' ＝ ？'));
+    const head = q.read
+      ? `<div class="qbody read">${q.read}</div><div class="qsub" style="margin-top:8px">${q.q}　${q.sub?'（'+q.sub+'）':''}</div>`
+      : `<div class="qbody">${q.q}${suffix}</div><div class="qsub">${q.sub||''}</div>`;
+    inner=`
+      ${head}
+      <div class="ans">
+        ${q.div
+          ? `<input id="a1" class="k2" inputmode="numeric" placeholder="しょう" autocomplete="off">
+             <input id="a2" class="k2" inputmode="numeric" placeholder="あまり" autocomplete="off">`
+          : `<input id="a1" inputmode="${isK?'text':(q.dec?'decimal':'numeric')}" placeholder="${isK?'こたえ（ひらがな）':'こたえ'}" autocomplete="off">`}
+      </div>
+      <button class="btn leaf" id="grade">こたえあわせ</button>
+      <div id="rslt"></div>`;
+  }
+  const stageBadge = q.stage ? `<div style="font-size:11px;font-weight:800;color:var(--ember-deep);margin-bottom:6px">${STAGE_NAME[q.stage]||''}</div>` : '';
+  area.innerHTML=`
+    ${stageBadge}
+    <span class="qtag ${tagClass(q)}">${tagLabel(q)}</span>
+    <span class="qprog">${qi+1} / ${mission.length}</span>
+    ${inner}`;
+  // ステージが変わったら ひとこと
+  if(qi>0 && mission[qi-1].stage!==q.stage){ toast("✨ "+(STAGE_NAME[q.stage]||"つぎのステージ")+"！"); }
+  if(q.mc){
+    area.querySelectorAll(".choice").forEach(b=>b.onclick=()=>gradeChoice(parseInt(b.dataset.i,10)));
+  }else{
+    const a1=document.getElementById("a1"); a1.focus();
+    area.querySelectorAll("input").forEach(inp=>inp.addEventListener("keydown",e=>{if(e.key==="Enter")doGrade();}));
+    document.getElementById("grade").onclick=doGrade;
+  }
+}
+function norm(s){return (s||"").trim().replace(/\s/g,"");}
+
+function gradeChoice(i){
+  const q=mission[qi];
+  const correct = i===q.a;
+  const btns=document.querySelectorAll(".choice");
+  btns.forEach((b,bi)=>{ b.disabled=true;
+    if(bi===q.a) b.classList.add("reveal");
+    if(bi===i && !correct) b.classList.add("pick-ng");
+    if(bi===i && correct) b.classList.add("pick-ok");
+  });
+  finishGrade(q, correct, q.choices[i], q.choices[q.a]);
+}
+function doGrade(){
+  const q=mission[qi];
+  const a1=norm(document.getElementById("a1").value);
+  let correct, given, correctText;
+  if(q.div){
+    const a2=norm((document.getElementById("a2")||{}).value);
+    given=`${a1} あまり ${a2||0}`;
+    correct = (parseInt(a1,10)===q.ans) && (parseInt(a2||"0",10)===q.rem);
+    correctText=`${q.ans} あまり ${q.rem}`;
+  }else if(q.cat==="かんじ"){
+    given=a1; correct = a1===q.ans; correctText=q.ans;
+  }else if(q.dec){
+    given=a1; correct = Math.abs(parseFloat(a1)-q.ans)<1e-6; correctText=q.ans;
+  }else{
+    given=a1; correct = parseInt(a1,10)===q.ans; correctText=q.ans;
+  }
+  document.getElementById("grade").disabled=true;
+  document.querySelectorAll("#quizArea input").forEach(i=>i.disabled=true);
+  finishGrade(q, correct, given, correctText);
+}
+function finishGrade(q, correct, given, correctText){
+  const st=S.stats[q.cat]; if(st){st.a++; if(correct)st.c++;}
+  const rslt=document.getElementById("rslt");
+  if(correct){
+    missionRight++; S.exp+=12; bounceBuddy();
+    rslt.innerHTML=`<div class="result ok"><span class="big">せいかい！🎉 ＋12 EXP</span>すごい！その調子！</div>
+      <button class="btn" id="next" style="margin-top:10px">つぎへ ▶</button>`;
+  }else{
+    rslt.innerHTML=`<div class="result ng"><span class="big">おしい！</span>きみの答え：${given||'（くうらん）'}　／　正解：<b>${correctText}</b></div>
+      <button class="btn ghost" id="ai" style="margin-top:10px">🦉 AI先生に「なぜ？」をきく</button>
+      <div id="aibox"></div>
+      <button class="btn" id="next" style="margin-top:10px">つぎへ ▶</button>`;
+    document.getElementById("ai").onclick=()=>askAI(q,given,correctText);
+  }
+  document.getElementById("next").onclick=()=>{qi++; renderQuestion(); updateHUD();};
+  updateHUD(); saveState();
+}
+
+/* ===================== AI解説（Claude API） ===================== */
+async function askAI(q,given,correctText){
+  const box=document.getElementById("aibox");
+  const btn=document.getElementById("ai"); btn.disabled=true;
+  box.innerHTML=`<div class="ai"><div class="who">🦉 AI先生</div><div class="body"><span class="dots">かんがえてるよ</span></div></div>`;
+
+  let qline, tip;
+  if(q.cat==="かんじ"){ qline=`「${q.q}」の よみがな`; tip="なぜその読み方か、どんな言葉で使うか、おぼえ方のコツも一言。"; }
+  else if(q.cat==="えいご"){ qline=`英語の問題「${q.q}」`; tip="正しい答えの意味とおぼえ方、使い方の例をひとつ、やさしい言葉で。"; }
+  else if(q.mc){
+    const body = (q.read? `（文・資料）${q.read}\n`:"") + `しつもん：${q.q}\nえらぶ：${q.choices.join(" / ")}`;
+    qline=body;
+    tip = q.cross ? "どの情報に注目すれば答えが出るか、考える順番をやさしく。"
+        : q.subj==="理科" ? "なぜその答えになるか、しくみを みじかく やさしく。"
+        : q.subj==="社会" ? "そう決まっている りゆうや おぼえ方を やさしく。"
+        : "文の どこを見れば 答えが分かるか、読み取りのコツを やさしく。";
+  }
+  else { qline=`${q.q} の計算`; tip="とちゅうの計算の進め方を、じゅんばんに やさしく。"; }
+
+  const prompt =
+`あなたは小学4年生にやさしく教える先生「フクロウ先生」です。子どもが問題をまちがえました。
+やさしい言葉・ひらがな多め・短く（3〜5文）で、ぜったいに しかってはいけません。
+正しい考え方をステップで教え、最後に短い応援を一言。むずかしい用語は使わない。
+
+問題：${qline}
+子どもの答え：${given||"（くうらん）"}
+正しい答え：${correctText}
+
+${tip}`;
+  try{
+    const res=await fetch('/.netlify/functions/ai-explain',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt})
+    });
+    const data=await res.json();
+    const text=(data.text||'').trim();
+    box.innerHTML=`<div class="ai"><div class="who">🦉 AI先生</div><div class="body">${text||'うまく説明できなかったよ。もう一度ためしてみてね。'}</div></div>`;
+  }catch(e){
+    box.innerHTML=`<div class="ai"><div class="who">🦉 AI先生</div><div class="body">いまは つながらないみたい。ネットを かくにんして、もう一度 おしてね。</div></div>`;
+    btn.disabled=false;
+  }
+}
+
+/* ===================== ミッション結果 ===================== */
+function renderSummary(){
+  const area=document.getElementById("quizArea");
+  const bonus = missionRight===mission.length? 30:0;
+  if(bonus){S.exp+=bonus;}
+  const stages = new Set(mission.map(m=>m.stage||1)).size;
+  const eggsGot = stages + (missionRight===mission.length?1:0);   // ステージ数ぶん＋全問正解ボーナス
+  S.eggs=(S.eggs||0)+eggsGot;
+  // ずかん：EXPマイルストーンで仲間解放
+  unlockByExp();
+  area.innerHTML=`
+    <div style="text-align:center">
+      <div class="eyebrow" style="text-align:center">ミッション クリア</div>
+      <div class="qbody" style="font-size:40px">🎊</div>
+      <div style="font-family:'Mochiy Pop One';font-size:22px;color:var(--ink)">${missionRight} / ${mission.length} せいかい！</div>
+      <p style="font-weight:800;color:var(--leaf-d);margin:8px 0 2px">${bonus? "ぜんもん正解ボーナス ＋30 EXP！🌟":"よくがんばったね！"}</p>
+      <p style="font-weight:800;color:var(--ember-deep);margin:2px 0 10px">🥚 たまご ＋${eggsGot}！ ホームで かえそう（くじ）</p>
+      <button class="btn" id="back" style="margin-top:6px">ホームへ もどる</button>
+    </div>`;
+  document.getElementById("back").onclick=()=>{switchTab("home");};
+  // ストリーク更新 ＋ 学習履歴
+  bumpStreak();
+  const t=todayStr(); if(!S.history)S.history=[];
+  if(!S.history.includes(t)){ S.history.push(t); if(S.history.length>90)S.history=S.history.slice(-90); }
+  updateHUD(); saveState();
+}
+
+/* ===================== たまご・くじ・おこづかい ===================== */
+function monthStr(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1);}
+function ensureMonth(){ if(S.opMonth!==monthStr()){ S.opPrev=S.opPoints||0; S.opPoints=0; S.opMonth=monthStr(); } }
+function allowanceYen(){ const r=(S.settings&&S.settings.yenPer)||1; const cap=(S.settings&&S.settings.cap)||1000; return Math.min(Math.floor((S.opPoints||0)*r), cap); }
+const TIERS=[
+  {name:"ノーマル",     star:"⭐",        w:58, pt:[5,12],   col:"#9aa0d0"},
+  {name:"レア",         star:"⭐⭐",      w:28, pt:[18,28],  col:"#43B0F1"},
+  {name:"スーパーレア", star:"⭐⭐⭐",    w:11, pt:[42,60],  col:"#b06bd1"},
+  {name:"ウルトラレア", star:"✨⭐⭐⭐✨",w:3,  pt:[95,130], col:"#FFC53D"}
+];
+function rollTier(){let r=Math.random()*100,acc=0;for(const t of TIERS){acc+=t.w;if(r<acc)return t;}return TIERS[0];}
+function hatchEgg(){
+  if((S.eggs||0)<=0){ toast("たまごが ないよ。ミッションで ゲットしよう！"); return; }
+  ensureMonth();
+  S.eggs--;
+  const t=rollTier();
+  const pts=ri(t.pt[0],t.pt[1]);
+  const pool=allMons();
+  // レア度に合うキャラをえらぶ（ウルトラレアは限定も含む）
+  const targetR = t.pt[1]>90?4 : t.pt[1]>55?3 : t.pt[1]>25?2 : 1;
+  let candidates=pool.map((m,i)=>({m,i})).filter(x=>(x.m.r||1)===targetR);
+  if(!candidates.length) candidates=pool.map((m,i)=>({m,i}));
+  const chosen=candidates[ri(0,candidates.length-1)];
+  const mi=chosen.i; const mon=chosen.m;
+  const isNew=!S.dex.includes(mi); if(isNew) S.dex.push(mi);
+  const isLimited=!!mon.limited;
+  const bonus=isNew?(isLimited?30:15):0;
+  S.opPoints=(S.opPoints||0)+pts+bonus;
+  hatchFlash(mon,t,pts+bonus,isNew,isLimited);
+  updateHUD(); saveState();
+}
+function hatchFlash(mon,t,pts,isNew,isLimited){
+  const d=document.createElement("div");d.className="flash";
+  d.innerHTML=`<div class="box">
+    <div class="star" style="color:${t.col}">${t.star}</div>
+    <div style="font-size:66px;margin:6px 0" class="hatchpop">${mon.f}</div>
+    <div style="font-family:'Mochiy Pop One';font-size:20px;color:#fff">${mon.n}</div>
+    <div style="font-weight:800;color:${t.col};margin:4px 0">${t.name}${isLimited?' 🗓️ 今月かぎり！':''}${isNew?' ✨はじめて！':''}</div>
+    ${mon.g?`<div style="font-size:12px;color:#c8caee;margin:2px 0">グループ：${mon.g}</div>`:''}
+    <div class="lvl" style="font-size:32px">＋${pts}pt</div>
+    <div style="font-size:12px;color:#cfd1f0;margin-top:8px">タップでとじる</div>
+  </div>`;
+  d.onclick=()=>d.remove(); document.body.appendChild(d);
+  setTimeout(()=>{if(d.parentNode)d.remove();},2600);
+}
+
+/* ===================== 宝箱 ===================== */
+function todayStr(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function openChest(){
+  if(S.lastChest===todayStr())return;
+  const chest=document.getElementById("chest");
+  chest.classList.add("shake");
+  setTimeout(()=>{
+    S.lastChest=todayStr();
+    const roll=Math.random();
+    let msg;
+    if(roll<0.35){const g=ri(2,5)*10;S.exp+=g;msg=`✨ EXP ＋${g}！`;}
+    else if(roll<0.6){const c=ri(1,4)*10;S.coins+=c;msg=`🪙 コイン ＋${c}！`;}
+    else if(roll<0.85){S.eggs=(S.eggs||0)+1;msg="🥚 たまご ＋1！";}
+    else{const got=unlockRandom(); if(got){msg=`📖 あたらしい なかま「${got}」GET！`;} else {S.eggs=(S.eggs||0)+1;msg="🥚 たまご ＋1！";}}
+    chest.classList.remove("shake");chest.classList.add("opened");chest.textContent="📦";
+    document.getElementById("chestMsg").textContent=msg;
+    document.getElementById("chestBtn").disabled=true;
+    toast(msg); updateHUD(); saveState();
+  },500);
+}
+
+/* ===================== ずかん解放 ===================== */
+function unlockByExp(){
+  const pool=allMons();
+  const milestones=[60,180,360,600,900,1300,1800,2400,3200,4200,5500,7000];
+  let idx=1;
+  milestones.forEach(m=>{ if(S.exp>=m && idx<pool.length){ if(!S.dex.includes(idx)){S.dex.push(idx);toast(`📖 なかま「${pool[idx].n}」が なかまに！`);} idx++; } else { idx++; } });
+}
+function unlockRandom(){
+  const pool=allMons();
+  const locked=pool.map((_,i)=>i).filter(i=>!S.dex.includes(i) && !(pool[i].limited));
+  if(!locked.length)return null;
+  const p=locked[ri(0,locked.length-1)];S.dex.push(p);return pool[p].n;
+}
+
+/* ===================== ストリーク ===================== */
+function bumpStreak(){
+  const t=todayStr();
+  if(S.lastPlay===t)return; // 今日はもう数えた
+  const y=new Date();y.setDate(y.getDate()-1);
+  const ys=y.getFullYear()+"-"+(y.getMonth()+1)+"-"+y.getDate();
+  S.streak = (S.lastPlay===ys)? S.streak+1 : 1;
+  S.lastPlay=t;
+}
+
+/* ===================== 描画 ===================== */
+let lastLv=1;
+function updateHUD(){
+  const info=levelInfo();
+  const g=document.getElementById("greet"); if(g) g.textContent=`こんにちは、${S.name}！ きょうも ぼうけんしよう。`;
+  document.getElementById("coins").textContent=S.coins;
+  document.getElementById("lvl").textContent=info.lv;
+  document.getElementById("streak").textContent=S.streak;
+  const b=buddyOf(info.lv);
+  document.getElementById("buddyEgg").textContent=b.f;
+  document.getElementById("buddyName").textContent=b.n;
+  document.getElementById("buddyStage").textContent=`Lv${info.lv} ・ ${b.s}`;
+  const pct=Math.round(info.into/info.need*100);
+  document.getElementById("expBar").style.width=pct+"%";
+  document.getElementById("expTxt").textContent=`${info.into}/${info.need}`;
+  renderDex(); renderSkills();
+  ensureMonth();
+  // たまご・おこづかい
+  const eN=document.getElementById("eggN"); if(eN) eN.textContent=S.eggs||0;
+  const hb=document.getElementById("hatchBtn"); if(hb) hb.disabled=(S.eggs||0)<=0;
+  const opPt=document.getElementById("opPt"); if(opPt) opPt.textContent=(S.opPoints||0)+"pt";
+  const yen=allowanceYen(); const cap=(S.settings&&S.settings.cap)||1000;
+  const oy=document.getElementById("opYen"); if(oy) oy.textContent="¥"+yen;
+  const ob=document.getElementById("opBar"); if(ob) ob.style.width=Math.min(100,Math.round(yen/cap*100))+"%";
+  const ot=document.getElementById("opTxt"); if(ot) ot.textContent = yen>=cap? "今月MAXたっせい！🎉" : `あと ¥${cap-yen} でMAX`;
+  if(info.lv>lastLv){ levelUpFlash(info.lv); lastLv=info.lv; }
+  else lastLv=info.lv;
+}
+function renderDex(){
+  const pool=allMons();
+  const total=pool.length;
+  document.getElementById("dexn").textContent=S.dex.length+"/"+total;
+  const love=Math.min(100, Math.round(S.dex.length/total*60) + levelInfo().lv*2);
+  document.getElementById("loveBar").style.width=love+"%";
+  document.getElementById("loveTxt").textContent=love+"%";
+  const g=document.getElementById("dexGrid");
+  // グループ別に仕切りを入れる
+  const groups={};
+  pool.forEach((m,i)=>{ const gn=m.limited?`🗓️ ${new Date().getMonth()+1}月かぎり`:(m.g||"その他"); if(!groups[gn])groups[gn]=[]; groups[gn].push({m,i}); });
+  g.innerHTML=Object.keys(groups).map(gn=>{
+    const items=groups[gn].map(({m,i})=>{
+      const got=S.dex.includes(i);
+      const badge=m.limited?'<div style="font-size:9px;color:var(--gold);font-weight:800">限定</div>':'';
+      return `<div class="slot ${got?'got':''}" title="${got?m.n:'？？？'}">${badge}<div class="face">${got?m.f:'❔'}</div><div style="font-size:10px;line-height:1.2">${got?m.n:'？？？'}</div></div>`;
+    }).join("");
+    return `<div style="grid-column:1/-1;font-size:11px;font-weight:800;color:var(--ember-deep);margin:10px 0 4px;padding-top:8px;border-top:1px solid var(--line)">${gn}（${groups[gn].filter(x=>S.dex.includes(x.i)).length}/${groups[gn].length}）</div>${items}`;
+  }).join("");
+}
+function renderSkills(){
+  const el=document.getElementById("skills");
+  el.innerHTML=Object.keys(SUBJECTS).map(subj=>{
+    let a=0,c=0;
+    SUBJECTS[subj].forEach(cat=>{const st=S.stats[cat]; if(st){a+=st.a;c+=st.c;}});
+    const rate=a?Math.round(c/a*100):0;
+    const col = rate>=80?'var(--leaf)':rate>=50?'var(--gold)':'var(--berry)';
+    const lab = a? `${rate}%（${c}/${a}）`:'まだ';
+    return `<div class="skill"><div class="row"><span>${SUBJ_ICON[subj]} ${subj}</span><span class="pct">${lab}</span></div>
+      <div class="mini"><i style="width:${a?rate:3}%;background:${col}"></i></div></div>`;
+  }).join("");
+}
+function bounceBuddy(){const e=document.getElementById("buddyEgg");e.classList.remove("bounce");void e.offsetWidth;e.classList.add("bounce");}
+function levelUpFlash(lv){
+  const b=buddyOf(lv);
+  const d=document.createElement("div");d.className="flash";
+  d.innerHTML=`<div class="box"><div class="star">★★★★★</div>
+    <div style="font-family:'Mochiy Pop One';font-size:20px;color:#fff">LEVEL UP!!</div>
+    <div class="lvl">Lv.${lv}</div>
+    <div style="font-size:34px;margin:6px 0">${b.f}</div>
+    <div style="font-weight:800">${b.n}</div></div>`;
+  d.onclick=()=>d.remove();document.body.appendChild(d);
+  setTimeout(()=>{if(d.parentNode)d.remove();},2200);
+}
+function toast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2000);}
+
+/* ===================== 保護者ダッシュボード ===================== */
+function subjRate(subj){let a=0,c=0;SUBJECTS[subj].forEach(cat=>{const st=S.stats[cat];if(st){a+=st.a;c+=st.c;}});return{a,c,rate:a?Math.round(c/a*100):0};}
+function renderParent(){
+  const info=levelInfo();
+  document.getElementById("pTitle").textContent=`${S.name} の ようす`;
+  const didToday=(S.history||[]).includes(todayStr());
+  const totalSolved=Object.values(S.stats).reduce((s,x)=>s+x.a,0);
+  document.getElementById("pSummary").innerHTML=`<div class="pstat">
+    <div><div class="k">レベル</div><div class="v">Lv${info.lv}</div></div>
+    <div><div class="k">連続</div><div class="v">${S.streak}日</div></div>
+    <div><div class="k">今日</div><div class="v">${didToday?"✅":"まだ"}</div></div>
+    <div><div class="k">のべ問題</div><div class="v">${totalSolved}</div></div></div>
+    <div style="margin-top:10px;background:#eafaef;border:1px solid #c7ecd3;border-radius:14px;padding:10px 12px;font-weight:800;color:#1f7d40;font-size:14px">
+      💰 今月のおこづかい（お支払い目安）：<b style="font-size:18px">¥${allowanceYen()}</b>
+      <span style="color:#6a6fb0;font-weight:700;font-size:12px">／ 先月：¥${Math.min(Math.floor((S.opPrev||0)*((S.settings&&S.settings.yenPer)||1)),(S.settings&&S.settings.cap)||1000)}　（たまご${S.eggs||0}こ・${S.opPoints||0}pt・毎月1日リセット）</span>
+    </div>`;
+  document.getElementById("pSkills").innerHTML=Object.keys(SUBJECTS).map(subj=>{
+    const r=subjRate(subj);const col=r.rate>=80?'var(--leaf)':r.rate>=50?'var(--gold)':'var(--berry)';
+    const lab=r.a?`${r.rate}%（${r.c}/${r.a}）`:'まだ';
+    return `<div class="skill"><div class="row"><span>${SUBJ_ICON[subj]} ${subj}</span><span class="pct">${lab}</span></div><div class="mini"><i style="width:${r.a?r.rate:3}%;background:${col}"></i></div></div>`;
+  }).join("");
+  const done=Object.keys(SUBJECTS).map(s=>({s,...subjRate(s)})).filter(x=>x.a>0);
+  let an="まだデータが少ないよ。何回かミッションをやると、得意・苦手が見えてきます。";
+  if(done.length){
+    const best=done.reduce((a,b)=>b.rate>a.rate?b:a);
+    const worst=done.reduce((a,b)=>b.rate<a.rate?b:a);
+    an=`いまの得意は <b>${best.s}（${best.rate}%）</b>、のばしどころは <b>${worst.s}（${worst.rate}%）</b>。アプリは自動で苦手分野を多めに出します。`;
+  }
+  document.getElementById("pAnalysis").innerHTML=an;
+  const days=[];const d=new Date();
+  for(let i=13;i>=0;i--){const x=new Date(d);x.setDate(d.getDate()-i);days.push(x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate());}
+  document.getElementById("pCal").innerHTML=`<div class="cal">`+days.map(ds=>{
+    const on=(S.history||[]).includes(ds);const dd=ds.split("-")[2];
+    return `<div class="dot ${on?'on':''}">${on?'●':dd}</div>`;}).join("")+`</div>`;
+  renderPSettings();
+}
+function seg(label,opts,cur){
+  return `<div class="setrow"><div class="setlab">${label}</div><div class="seg">`+
+    opts.map(o=>`<button class="${o===cur?'on':''}" data-v="${o}">${o}</button>`).join("")+`</div></div>`;
+}
+function renderPSettings(){
+  const s=S.settings;
+  const host=document.getElementById("pSettings");
+  const rateLabel = s.yenPer===1?"1pt=¥1":s.yenPer===0.5?"2pt=¥1":"5pt=¥1";
+  host.innerHTML=
+    seg("1日の問題量",["みじかめ","ふつう","しっかり"],s.vol||"しっかり")+
+    seg("理科・社会の頻度",["毎日","隔日","なし"],s.rasha)+
+    seg("適性検査（日曜の横断）",["いれる","いれない"],s.cross!==false?"いれる":"いれない")+
+    seg("計算のレベル",["やさしい","ふつう","むずかしい"],s.diff)+
+    seg("おこづかい こうかん率",["1pt=¥1","2pt=¥1","5pt=¥1"],rateLabel)+
+    seg("おこづかい 月の上限",["¥500","¥1000","¥1500","¥3000"],"¥"+s.cap)+
+    `<div class="setrow"><div class="setlab">なまえ</div>
+      <input id="pName" value="${S.name}" maxlength="8" style="font-family:'M PLUS Rounded 1c';font-weight:800;padding:8px 10px;border-radius:10px;border:2px solid var(--line);width:130px;color:var(--ink)">
+      <button class="btn leaf" id="pNameSave" style="width:auto;padding:8px 16px">保存</button></div>`;
+  const segs=host.querySelectorAll(".seg");
+  segs.forEach((segEl,idx)=>segEl.querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    const v=b.dataset.v;
+    if(idx===0)s.vol=v;
+    else if(idx===1)s.rasha=v;
+    else if(idx===2)s.cross=(v==="いれる");
+    else if(idx===3)s.diff=v;
+    else if(idx===4)s.yenPer=(v==="1pt=¥1"?1:v==="2pt=¥1"?0.5:0.2);
+    else if(idx===5)s.cap=parseInt(v.replace("¥",""),10);
+    saveState(); renderParent(); updateHUD();
+  }));
+  document.getElementById("pNameSave").onclick=()=>{
+    S.name=(document.getElementById("pName").value||"").trim()||"ゆうき";
+    saveState(); updateHUD(); renderParent(); toast("なまえを ほぞんしたよ");
+  };
+}
+
+/* ===================== タブ ===================== */
+function switchTab(name){
+  ["home","study","dex","rec","parent"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hidden",t!==name));
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));
+  if(name==="parent") renderParent();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
+
+/* ===================== 起動 ===================== */
+(async function(){
+  S=await loadState();
+  CATS.forEach(c=>{ if(!S.stats[c]) S.stats[c]={a:0,c:0}; });   // 新しい教科を追加しても安全に
+  if(!S.history) S.history=[];
+  if(!S.settings) S.settings={rasha:"隔日",cross:true,diff:"ふつう",yenPer:1,cap:1000};
+  if(S.settings.yenPer==null) S.settings.yenPer=1;
+  if(S.settings.cap==null) S.settings.cap=1000;
+  if(S.settings.vol==null) S.settings.vol="しっかり";
+  if(S.eggs==null) S.eggs=0;
+  if(S.opMonth==null){ S.opMonth=monthStr(); S.opPoints=0; S.opPrev=0; }
+  ensureMonth();
+  lastLv=levelInfo().lv;
+  // 宝箱の状態
+  if(S.lastChest===todayStr()){
+    const c=document.getElementById("chest");c.classList.add("opened");c.textContent="📦";
+    document.getElementById("chestMsg").textContent="きょうの たからばこは あけたよ。また あした！";
+    document.getElementById("chestBtn").disabled=true;
+  }
+  document.getElementById("chestBtn").onclick=openChest;
+  document.getElementById("chest").onclick=()=>{ if(S.lastChest!==todayStr())openChest(); };
+  document.getElementById("chest").onkeydown=(e)=>{if((e.key==="Enter"||e.key===" ")&&S.lastChest!==todayStr())openChest();};
+  document.getElementById("startBtn").onclick=startMission;
+  const eggEl=document.getElementById("egg");
+  document.getElementById("hatchBtn").onclick=()=>{ eggEl.classList.add("wiggle"); setTimeout(()=>{eggEl.classList.remove("wiggle");hatchEgg();},450); };
+  eggEl.onclick=()=>{ if((S.eggs||0)>0){eggEl.classList.add("wiggle");setTimeout(()=>{eggEl.classList.remove("wiggle");hatchEgg();},450);} };
+  eggEl.onkeydown=(e)=>{ if((e.key==="Enter"||e.key===" ")&&(S.eggs||0)>0)hatchEgg(); };
+  updateHUD();
+  // PWA Service Worker 登録
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  }
+})();
+</script>
+</body>
+</html>

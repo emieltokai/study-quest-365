@@ -1,0 +1,25 @@
+{
+  "name": "スタディクエスト365",
+  "short_name": "スタクエ365",
+  "description": "毎日の学習RPG。卵をかえしてキャラをあつめよう！",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1B1F3B",
+  "theme_color": "#1B1F3B",
+  "orientation": "portrait",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%231B1F3B' rx='32'/><text y='160' x='16' font-size='160'>🦊</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%231B1F3B' rx='80'/><text y='430' x='40' font-size='420'>🦊</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["education", "games"],
+  "screenshots": []
+}
